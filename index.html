@@ -1624,30 +1624,16 @@
       }
 
       .section-title {
-        font-size: 2.4rem;
+        font-size: 2.2rem;
       }
 
       .hero-content h1 {
-        font-size: 3.2rem;
+        font-size: 2.6rem;
       }
 
       .hero-buttons .btn-primary,
       .hero-buttons .btn-outline {
         width: auto;
-      }
-
-      .services-grid {
-        grid-template-columns: repeat(3, 1fr);
-      }
-
-      .about-grid {
-        grid-template-columns: 1fr 1fr;
-        gap: 40px;
-      }
-
-      .contact-grid {
-        grid-template-columns: 1fr 1fr;
-        gap: 30px;
       }
 
       .floating-wa {
@@ -1666,6 +1652,20 @@
         font-size: 1.8rem;
       }
 
+      .hero-stats {
+        justify-content: center;
+      }
+
+      .hero-stats .stat-item {
+        text-align: center;
+        min-width: 180px;
+      }
+    }
+
+    /* ============================================================
+       TABLET (768px+): move to 2-column layouts once there's room
+    ============================================================ */
+    @media screen and (min-width: 768px) {
       .hero .container {
         grid-template-columns: 1fr 1fr;
         gap: 30px;
@@ -1680,14 +1680,31 @@
       }
 
       .hero-stats {
-        justify-content: center;
-        flex-direction: column;
-        align-items: center;
+        flex-direction: row;
+        justify-content: flex-start;
       }
 
-      .hero-stats .stat-item {
-        text-align: center;
-        min-width: 180px;
+      .hero-buttons {
+        justify-content: flex-start;
+      }
+
+      .services-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .contact-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+      }
+
+      .about-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+        text-align: left;
+      }
+
+      .hero-content h1 {
+        font-size: 3.2rem;
       }
     }
 
@@ -1788,6 +1805,7 @@
       }
 
       .services-grid {
+        grid-template-columns: repeat(3, 1fr);
         gap: 24px;
       }
 
@@ -1975,6 +1993,24 @@
 
       .whatsapp-modal {
         padding: 24px 18px;
+      }
+
+      .contact-form-liquid input,
+      .contact-form-liquid textarea {
+        font-size: 16px;
+      }
+
+      .hero-stats {
+        gap: 16px;
+      }
+
+      .hero-stats .stat-item {
+        padding: 16px 20px;
+        flex: 1 1 auto;
+      }
+
+      .hero-stats .stat-number {
+        font-size: 1.6rem;
       }
     }
 
