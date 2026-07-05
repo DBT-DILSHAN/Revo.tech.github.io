@@ -2605,19 +2605,41 @@
       setTimeout(animateCounters, 600);
 
       // ============================================================
-      // 11. EMAILJS INITIALIZATION
+      // 11. EMAILJS CONFIGURATION
       // ============================================================
-      emailjs.init('PD8Bxa0tEm1PbizPk');
+      const EMAILJS_CONFIG = {
+        EMAILJS_PUBLIC_KEY: 'PD8Bxa0tEm1PbizPk',
+        EMAILJS_SERVICE_ID: 'service_in0migl',
+        EMAILJS_TEMPLATE_ID: 'template_rzqdow9',
+        FORM_COOLDOWN_SECONDS: 30
+      };
 
       // ============================================================
-      // 11A. CONTACT FORM WITH EMAILJS
+      // 11A. EMAILJS INITIALIZATION
+      // ============================================================
+      emailjs.init(EMAILJS_CONFIG.EMAILJS_PUBLIC_KEY);
+
+      // ============================================================
+      // 11B. CONTACT FORM WITH EMAILJS & COOLDOWN
       // ============================================================
       const form = document.getElementById('contactForm');
+      let lastSubmitTime = 0;
+      
       if (form) {
         form.addEventListener('submit', function(e) {
           e.preventDefault();
           
           const submitButton = form.querySelector('button[type="submit"]');
+          const now = Date.now();
+          const timeSinceLastSubmit = (now - lastSubmitTime) / 1000;
+          
+          // Check cooldown
+          if (timeSinceLastSubmit < EMAILJS_CONFIG.FORM_COOLDOWN_SECONDS) {
+            const remainingTime = Math.ceil(EMAILJS_CONFIG.FORM_COOLDOWN_SECONDS - timeSinceLastSubmit);
+            alert(`⏱️ Please wait ${remainingTime} second${remainingTime !== 1 ? 's' : ''} before submitting again.`);
+            return;
+          }
+          
           const originalText = submitButton.textContent;
           submitButton.textContent = 'Sending...';
           submitButton.disabled = true;
@@ -2630,15 +2652,21 @@
             to_email: 'dilshantharindu212@gmail.com'
           };
 
-          emailjs.send('service_in0migl', 'template_rzqdow9', templateParams)
+          emailjs.send(
+            EMAILJS_CONFIG.EMAILJS_SERVICE_ID,
+            EMAILJS_CONFIG.EMAILJS_TEMPLATE_ID,
+            templateParams
+          )
             .then(function(response) {
+              lastSubmitTime = Date.now();
               alert('✅ Thank you! Your message has been sent successfully. We will contact you shortly!');
               form.reset();
               submitButton.textContent = originalText;
               submitButton.disabled = false;
+              console.log('✅ Email sent successfully (ID: ' + response.status + ')');
             }, function(error) {
               alert('❌ Sorry, there was an error sending your message. Please try again or call us directly.');
-              console.error('EmailJS error:', error);
+              console.error('❌ EmailJS error:', error);
               submitButton.textContent = originalText;
               submitButton.disabled = false;
             });
