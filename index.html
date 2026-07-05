@@ -3,13 +3,19 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
-  <title>RevoTech Solutions · Professional Services</title>
-  <meta name="description" content="RevoTech Solutions - Professional residential & commercial electrical services." />
+  <meta name="theme-color" content="#070d1a" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>RevoTech Solutions · Professional Electrical Services</title>
+  <meta name="description" content="RevoTech Solutions - Professional residential & commercial electrical services. 24/7 emergency support, CCTV installation, and expert wiring." />
+  <meta name="keywords" content="electrical services, CCTV installation, emergency repair, residential, commercial" />
+  
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800;14..32,900&family=Orbitron:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js" defer></script>
+  
   <style>
     /* ============================================================
        ROOT VARIABLES (Dark/Light Theme)
@@ -30,7 +36,6 @@
       --section-padding: 50px 0;
     }
 
-    /* Dark Theme (Default) */
     [data-theme="dark"] {
       --bg-dark: #070d1a;
       --glass-bg: rgba(10, 20, 40, 0.45);
@@ -48,11 +53,6 @@
       --preloader-bg: #070d1a;
     }
 
-    
-
-    /* ============================================================
-       RESET & BASE
-    ============================================================ */
     * {
       margin: 0;
       padding: 0;
@@ -435,7 +435,6 @@
 
     /* ============================================================
        LIQUID GLASS TOUCH BUTTONS
-       Shared glass treatment: blur, specular highlight, press feedback
     ============================================================ */
     .btn-primary,
     .btn-outline,
@@ -489,7 +488,7 @@
     }
 
     /* ============================================================
-       SOCIAL ICONS (Icon Only - No Text)
+       SOCIAL ICONS
     ============================================================ */
     .social-icon {
       display: inline-flex;
@@ -702,6 +701,7 @@
       object-position: center;
       opacity: 0.55;
       animation: heroKenBurns 12s ease-in-out infinite alternate;
+      content-visibility: auto;
     }
 
     .hero-bg::after {
@@ -969,10 +969,9 @@
       gap: 10px;
       color: var(--text-secondary);
       font-size: 0.85rem;
-      padding: 6px;
+      padding: 6px 14px;
       background: var(--card-bg);
       border-radius: 60px;
-      padding: 6px 14px;
       border: 1px solid var(--glass-border);
     }
 
@@ -981,51 +980,8 @@
       font-size: 0.9rem;
     }
 
-    .about-card {
-      padding: 32px 28px;
-      text-align: center;
-    }
-
-    .about-card i {
-      font-size: 3rem;
-      color: var(--primary);
-      margin-bottom: 12px;
-    }
-
-    .about-card h4 {
-      font-size: 1.2rem;
-      margin-bottom: 4px;
-    }
-
-    .about-icons-center {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 20px;
-      flex-wrap: wrap;
-      margin-top: 18px;
-      padding: 10px 0;
-    }
-
-    .about-icons-center .icon-item {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      background: var(--badge-bg);
-      padding: 6px 18px;
-      border-radius: 40px;
-      border: 1px solid var(--glass-border);
-      font-size: 0.8rem;
-      color: var(--text-secondary);
-    }
-
-    .about-icons-center .icon-item i {
-      color: var(--primary);
-      font-size: 1rem;
-    }
-
     /* ============================================================
-       SERVICES GRID WITH ANIMATION
+       SERVICES GRID
     ============================================================ */
     .services-grid {
       display: grid;
@@ -1044,6 +1000,7 @@
       cursor: default;
       position: relative;
       overflow: hidden;
+      content-visibility: auto;
     }
 
     .service-card-liquid::before {
@@ -1098,6 +1055,7 @@
       transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
       position: relative;
       overflow: hidden;
+      content-visibility: auto;
     }
 
     .service-card-liquid .service-image::before {
@@ -1132,11 +1090,6 @@
       opacity: 1;
     }
 
-    .service-card-liquid:hover .service-image i {
-      transform: scale(1.1) rotateZ(-5deg);
-      color: var(--primary-light);
-    }
-
     .service-card-liquid:hover .icon-wrap {
       transform: scale(1.15) rotate(-6deg);
       background: linear-gradient(135deg, rgba(0, 102, 255, 0.15), rgba(0, 102, 255, 0.04));
@@ -1154,14 +1107,12 @@
       font-size: 0.8rem;
     }
 
-    /* Stagger Animation */
     .service-card-liquid:nth-child(1) { transition-delay: 0.05s; }
     .service-card-liquid:nth-child(2) { transition-delay: 0.1s; }
     .service-card-liquid:nth-child(3) { transition-delay: 0.15s; }
     .service-card-liquid:nth-child(4) { transition-delay: 0.2s; }
     .service-card-liquid:nth-child(5) { transition-delay: 0.25s; }
     .service-card-liquid:nth-child(6) { transition-delay: 0.3s; }
-    .service-card-liquid:nth-child(7) { transition-delay: 0.35s; }
 
     /* ============================================================
        WORKING HOURS
@@ -1203,7 +1154,7 @@
     }
 
     /* ============================================================
-       SOCIAL SECTION (Icon Only)
+       SOCIAL SECTION
     ============================================================ */
     .social-section {
       padding: 40px 0;
@@ -1235,9 +1186,6 @@
       flex-wrap: wrap;
     }
 
-    /* ============================================================
-       SOCIAL ICON AMBIENT ANIMATION (continuous float + brand glow)
-    ============================================================ */
     @keyframes socialFloat {
       0%, 100% { transform: translateY(0); }
       50% { transform: translateY(-6px); }
@@ -1267,189 +1215,6 @@
       .social-icon {
         animation: none;
       }
-    }
-
-    /* ============================================================
-       WHATSAPP QUICK QUOTE MODAL
-    ============================================================ */
-    .whatsapp-modal-overlay {
-      position: fixed;
-      inset: 0;
-      z-index: 9999;
-      background: rgba(0, 0, 0, 0.6);
-      backdrop-filter: blur(8px);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-    }
-
-    .whatsapp-modal-overlay.active {
-      display: flex;
-    }
-
-    .whatsapp-modal {
-      background: var(--bg-dark);
-      border: 1px solid var(--glass-border);
-      border-radius: var(--radius-xl);
-      max-width: 440px;
-      width: 100%;
-      padding: 32px 28px;
-      position: relative;
-      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.4);
-      animation: modalSlideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-
-    @keyframes modalSlideUp {
-      from {
-        opacity: 0;
-        transform: translateY(40px) scale(0.95);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-      }
-    }
-
-    .whatsapp-modal .modal-close {
-      position: absolute;
-      top: 12px;
-      right: 16px;
-      background: transparent;
-      border: none;
-      color: var(--text-secondary);
-      font-size: 1.4rem;
-      cursor: pointer;
-      transition: color 0.3s;
-      padding: 4px;
-    }
-
-    .whatsapp-modal .modal-close:hover {
-      color: var(--text-primary);
-    }
-
-    .whatsapp-modal .modal-icon {
-      width: 60px;
-      height: 60px;
-      background: #25D366;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2.2rem;
-      color: #fff;
-      margin: 0 auto 12px;
-      box-shadow: 0 8px 30px rgba(37, 211, 102, 0.3);
-    }
-
-    .whatsapp-modal h3 {
-      font-size: 1.3rem;
-      text-align: center;
-      margin-bottom: 4px;
-    }
-
-    .whatsapp-modal p {
-      color: var(--text-secondary);
-      text-align: center;
-      font-size: 0.9rem;
-      margin-bottom: 20px;
-    }
-
-    .whatsapp-modal input,
-    .whatsapp-modal textarea {
-      width: 100%;
-      padding: 12px 16px;
-      border-radius: 60px;
-      border: 1px solid var(--glass-border);
-      background: var(--input-bg);
-      color: var(--text-primary);
-      font-family: inherit;
-      transition: all 0.3s;
-      margin-bottom: 10px;
-      font-size: 0.9rem;
-    }
-
-    .whatsapp-modal input:focus,
-    .whatsapp-modal textarea:focus {
-      outline: none;
-      border-color: var(--primary);
-      box-shadow: 0 0 20px rgba(0, 102, 255, 0.04);
-    }
-
-    .whatsapp-modal input::placeholder,
-    .whatsapp-modal textarea::placeholder {
-      color: var(--text-muted);
-    }
-
-    .whatsapp-modal textarea {
-      border-radius: 16px;
-      resize: vertical;
-      min-height: 80px;
-    }
-
-    .whatsapp-modal .btn-primary {
-      width: 100%;
-      justify-content: center;
-    }
-
-    /* Floating WhatsApp Button */
-    .floating-wa {
-      position: fixed;
-      bottom: 16px;
-      right: 16px;
-      z-index: 999;
-      background: rgba(37, 211, 102, 0.82);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      width: 52px;
-      height: 52px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.8rem;
-      color: #fff;
-      box-shadow: 0 4px 30px rgba(37, 211, 102, 0.3);
-      transition: all var(--transition);
-      text-decoration: none;
-      animation: waPulse 2.5s ease-in-out infinite;
-      touch-action: manipulation;
-      cursor: pointer;
-    }
-
-    .floating-wa:hover {
-      transform: scale(1.1) rotate(6deg);
-      box-shadow: 0 8px 40px rgba(37, 211, 102, 0.4);
-    }
-
-    @keyframes waPulse {
-      0%, 100% { box-shadow: 0 4px 30px rgba(37, 211, 102, 0.3); }
-      50% { box-shadow: 0 4px 50px rgba(37, 211, 102, 0.5), 0 0 80px rgba(37, 211, 102, 0.05); }
-    }
-
-    .floating-chat {
-      position: fixed;
-      bottom: 16px;
-      right: 16px;
-      z-index: 999;
-      background: rgba(0, 102, 255, 0.82);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      width: 52px;
-      height: 52px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.6rem;
-      color: #fff;
-      box-shadow: 0 4px 30px rgba(0, 102, 255, 0.3);
-      transition: all var(--transition);
-      text-decoration: none;
-      touch-action: manipulation;
-      cursor: pointer;
-    }
-
-    .floating-chat:hover {
-      transform: scale(1.1);
     }
 
     /* ============================================================
@@ -1487,7 +1252,7 @@
     }
 
     /* ============================================================
-       CONTACT (Phone Number Line Hidden)
+       CONTACT
     ============================================================ */
     .contact-grid {
       display: grid;
@@ -1517,11 +1282,6 @@
     .contact-info .contact-item a {
       color: var(--text-primary);
       text-decoration: none;
-    }
-
-    /* Hide phone number line - keeping only icon */
-    .contact-item.phone-hidden {
-      display: none !important;
     }
 
     .contact-form-liquid {
@@ -1566,35 +1326,6 @@
       border-radius: 16px;
       resize: vertical;
       min-height: 80px;
-    }
-
-    /* ============================================================
-       LOCATION ICON ONLY (No Map)
-    ============================================================ */
-    .location-only {
-      text-align: center;
-      margin-top: 30px;
-      padding: 20px;
-      background: var(--card-bg);
-      border-radius: var(--radius-md);
-      border: 1px solid var(--glass-border);
-    }
-
-    .location-only i {
-      font-size: 2.5rem;
-      color: var(--primary);
-      margin-bottom: 8px;
-    }
-
-    .location-only h4 {
-      font-size: 1rem;
-      font-weight: 600;
-      margin-bottom: 4px;
-    }
-
-    .location-only p {
-      color: var(--text-secondary);
-      font-size: 0.85rem;
     }
 
     /* ============================================================
@@ -1661,9 +1392,44 @@
     }
 
     /* ============================================================
+       FLOATING BUTTONS
+    ============================================================ */
+    .floating-wa {
+      position: fixed;
+      bottom: 16px;
+      right: 16px;
+      z-index: 999;
+      background: rgba(37, 211, 102, 0.82);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      color: #fff;
+      box-shadow: 0 4px 30px rgba(37, 211, 102, 0.3);
+      transition: all var(--transition);
+      text-decoration: none;
+      animation: waPulse 2.5s ease-in-out infinite;
+      touch-action: manipulation;
+      cursor: pointer;
+    }
+
+    .floating-wa:hover {
+      transform: scale(1.1) rotate(6deg);
+      box-shadow: 0 8px 40px rgba(37, 211, 102, 0.4);
+    }
+
+    @keyframes waPulse {
+      0%, 100% { box-shadow: 0 4px 30px rgba(37, 211, 102, 0.3); }
+      50% { box-shadow: 0 4px 50px rgba(37, 211, 102, 0.5), 0 0 80px rgba(37, 211, 102, 0.05); }
+    }
+
+    /* ============================================================
        RESPONSIVE
     ============================================================ */
-
     @media screen and (min-width: 600px) {
       :root {
         --container-padding: 32px;
@@ -1678,25 +1444,12 @@
         font-size: 2.6rem;
       }
 
-      .hero-buttons .btn-primary,
-      .hero-buttons .btn-outline {
-        width: auto;
-      }
-
       .floating-wa {
         bottom: 24px;
         right: 24px;
         width: 56px;
         height: 56px;
         font-size: 2rem;
-      }
-
-      .floating-chat {
-        bottom: 24px;
-        right: 24px;
-        width: 56px;
-        height: 56px;
-        font-size: 1.8rem;
       }
 
       .hero-stats {
@@ -1709,9 +1462,6 @@
       }
     }
 
-    /* ============================================================
-       TABLET (768px+): move to 2-column layouts once there's room
-    ============================================================ */
     @media screen and (min-width: 768px) {
       .hero .container {
         grid-template-columns: 1fr 1fr;
@@ -1885,14 +1635,6 @@
         right: 28px;
       }
 
-      .floating-chat {
-        width: 60px;
-        height: 60px;
-        font-size: 2rem;
-        bottom: 28px;
-        right: 28px;
-      }
-
       .btn-primary,
       .btn-outline,
       .btn-accent {
@@ -1920,13 +1662,6 @@
         width: 70px;
         height: 70px;
         font-size: 2.2rem;
-      }
-
-      .about-card {
-        padding: 36px 30px;
-      }
-      .about-card i {
-        font-size: 3.2rem;
       }
 
       .contact-form-liquid {
@@ -2029,19 +1764,6 @@
         gap: 6px;
       }
 
-      .about-icons-center {
-        gap: 10px;
-      }
-
-      .about-icons-center .icon-item {
-        font-size: 0.7rem;
-        padding: 4px 12px;
-      }
-
-      .whatsapp-modal {
-        padding: 24px 18px;
-      }
-
       .contact-form-liquid input,
       .contact-form-liquid textarea {
         font-size: 16px;
@@ -2077,13 +1799,7 @@
       .btn-accent:hover {
         transform: none !important;
       }
-      .hero-card-liquid {
-        animation: none !important;
-      }
       .floating-wa:hover {
-        transform: none !important;
-      }
-      .floating-chat:hover {
         transform: none !important;
       }
     }
@@ -2111,8 +1827,6 @@
     @media print {
       .navbar,
       .floating-wa,
-      .floating-chat,
-      .whatsapp-modal-overlay,
       .social-section,
       #scrollProgress,
       #preloader {
@@ -2156,7 +1870,7 @@
   ============================================================ -->
   <nav class="navbar" id="navbar">
     <div class="container">
-      <a href="#" class="logo-main">
+      <a href="#home" class="logo-main">
         <div class="logo-text-group">
           <span class="logo-text">RevoTECH<span class="trademark">™</span></span>
           <span class="logo-sub">SOLUTIONS</span>
@@ -2182,7 +1896,7 @@
   HERO
   ============================================================ -->
   <section class="hero" id="home">
-    <div class="hero-bg"><img src="hero-bg.jpg" alt="Electrical panel technician at work" loading="eager"></div>
+    <div class="hero-bg"><img src="hero-bg.jpg" alt="Electrical panel technician at work" loading="eager" width="1200" height="600"></div>
     <div class="container">
       <div class="hero-content">
         <div class="hero-badge"><i class="fas fa-bolt"></i> Professional Services</div>
@@ -2226,7 +1940,7 @@
   </section>
 
   <!-- ============================================================
-  SOCIAL SECTION (Icon Only - No Text Labels)
+  SOCIAL SECTION
   ============================================================ -->
   <section class="social-section" id="social">
     <div class="container">
@@ -2235,12 +1949,12 @@
         <h3>Follow <span class="highlight">RevoTech</span> on Social Media</h3>
         <p>Stay updated with our latest projects, tips, and security innovations.</p>
         <div class="social-icons-group">
-          <a href="https://www.facebook.com/share/14qRDMhWJDA/" target="_blank" class="social-icon facebook" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-          <a href="tel:0763539267" target="_blank" class="social-icon whatsapp" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-          <a href="#" target="_blank" class="social-icon instagram" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-          <a href="#" target="_blank" class="social-icon youtube" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
-          <a href="#" target="_blank" class="social-icon twitter" aria-label="X (Twitter)"><i class="fab fa-x-twitter"></i></a>
-          <a href="#" target="_blank" class="social-icon linkedin" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+          <a href="https://www.facebook.com/share/14qRDMhWJDA/" target="_blank" rel="noopener noreferrer" class="social-icon facebook" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+          <a href="https://wa.me/94763539267" target="_blank" rel="noopener noreferrer" class="social-icon whatsapp" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+          <a href="#" target="_blank" rel="noopener noreferrer" class="social-icon instagram" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="#" target="_blank" rel="noopener noreferrer" class="social-icon youtube" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+          <a href="#" target="_blank" rel="noopener noreferrer" class="social-icon twitter" aria-label="X (Twitter)"><i class="fab fa-x-twitter"></i></a>
+          <a href="#" target="_blank" rel="noopener noreferrer" class="social-icon linkedin" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
         </div>
       </div>
     </div>
@@ -2261,13 +1975,12 @@
             <div class="feature"><i class="fas fa-clock"></i> 24/7 Emergency Support</div>
           </div>
         </div>
-
       </div>
     </div>
   </section>
 
   <!-- ============================================================
-  SERVICES (Animated Grid)
+  SERVICES
   ============================================================ -->
   <section class="section-padding" id="services" style="background: radial-gradient(circle at 80% 20%, #0a1a30, var(--bg-dark) 90%);">
     <div class="container">
@@ -2278,37 +1991,37 @@
       </div>
       <div class="services-grid">
         <div class="service-card-liquid reveal">
-          <div class="service-image"><img src="General_Installation.jpg" alt="General Installation" loading="lazy"></div>
+          <div class="service-image"><img src="General_Installation.jpg" alt="General Installation" loading="lazy" width="300" height="140"></div>
           <div class="icon-wrap"><i class="fas fa-tools"></i></div>
           <h4>General Installation</h4>
           <p>Professional electrical installations for homes and businesses.</p>
         </div>
         <div class="service-card-liquid reveal">
-          <div class="service-image"><img src="Residential_Services.jpg" alt="Residential Services" loading="lazy"></div>
+          <div class="service-image"><img src="Residential_Services.jpg" alt="Residential Services" loading="lazy" width="300" height="140"></div>
           <div class="icon-wrap"><i class="fas fa-home"></i></div>
           <h4>Residential Services</h4>
           <p>Complete electrical solutions for your home.</p>
         </div>
         <div class="service-card-liquid reveal">
-          <div class="service-image"><img src="Commercial_Services.jpg" alt="Commercial Services" loading="lazy"></div>
+          <div class="service-image"><img src="Commercial_Services.jpg" alt="Commercial Services" loading="lazy" width="300" height="140"></div>
           <div class="icon-wrap"><i class="fas fa-building"></i></div>
           <h4>Commercial Services</h4>
           <p>Expert electrical services for businesses and industries.</p>
         </div>
         <div class="service-card-liquid reveal">
-          <div class="service-image"><img src="CCTV_Installation.jpg" alt="CCTV Installation" loading="lazy"></div>
+          <div class="service-image"><img src="CCTV_Installation.jpg" alt="CCTV Installation" loading="lazy" width="300" height="140"></div>
           <div class="icon-wrap"><i class="fas fa-camera"></i></div>
           <h4>CCTV Installation</h4>
           <p>HD & 4K cameras, remote access, night vision.</p>
         </div>
         <div class="service-card-liquid reveal">
-          <div class="service-image"><img src="Emergency_Repair_Service.jpg" alt="Emergency Repair Service" loading="lazy"></div>
+          <div class="service-image"><img src="Emergency_Repair_Service.jpg" alt="Emergency Repair Service" loading="lazy" width="300" height="140"></div>
           <div class="icon-wrap"><i class="fas fa-wrench"></i></div>
           <h4>Emergency Repair Service</h4>
           <p>24/7 rapid response for electrical emergencies and urgent repairs.</p>
         </div>
         <div class="service-card-liquid reveal">
-          <div class="service-image"><img src="Electrical__Wiring.jpg" alt="Electrical Wiring" loading="lazy"></div>
+          <div class="service-image"><img src="Electrical__Wiring.jpg" alt="Electrical Wiring" loading="lazy" width="300" height="140"></div>
           <div class="icon-wrap"><i class="fas fa-bolt"></i></div>
           <h4>Electrical Wiring</h4>
           <p>Safe, modern wiring for residential & commercial.</p>
@@ -2327,14 +2040,14 @@
         <p>Get a free estimate from our expert team today. We'll help you find the perfect solution.</p>
         <div class="cta-group">
           <a href="#contact" class="btn-primary"><i class="fas fa-paper-plane"></i> Get Free Estimate</a>
-          <a href="tel:0763539267" class="btn-outline"><i class="fas fa-phone"></i> 076 353 9267</a>
+          <a href="tel:+94763539267" class="btn-outline"><i class="fas fa-phone"></i> 076 353 9267</a>
         </div>
       </div>
     </div>
   </section>
 
   <!-- ============================================================
-  CONTACT (Phone Number Line Hidden, Map Removed)
+  CONTACT
   ============================================================ -->
   <section class="section-padding" id="contact" style="background: radial-gradient(circle at 20% 60%, #0a1a30, var(--bg-dark) 90%);">
     <div class="container">
@@ -2345,30 +2058,28 @@
       </div>
       <div class="contact-grid">
         <div class="contact-info reveal">
-          <div class="contact-item"><i class="fas fa-phone"></i><a href="tel:0763539267">0763539267</a></div>
+          <div class="contact-item"><i class="fas fa-phone"></i><a href="tel:+94763539267">076 353 9267</a></div>
           <div class="contact-item"><i class="fas fa-envelope"></i><a href="mailto:akilagimhan84@gmail.com">akilagimhan84@gmail.com</a></div>
           <div class="contact-item"><i class="fas fa-map-marker-alt"></i><span>28/A, 1st Step, Narthanagala, Munagama, Horana, 12400</span></div>
-          <div class="contact-item"><i class="fab fa-facebook"></i><a href="https://www.facebook.com/share/14qRDMhWJDA/" target="_blank">Follow us on Facebook</a></div>
+          <div class="contact-item"><i class="fab fa-facebook"></i><a href="https://www.facebook.com/share/14qRDMhWJDA/" target="_blank" rel="noopener noreferrer">Follow us on Facebook</a></div>
           
           <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:16px;">
-            <a href="tel:0763539267" class="btn-primary" style="flex:1; justify-content:center; min-width:120px;"><i class="fas fa-phone"></i> Call Now</a>
-            <a href="tel:0763539267" target="_blank" class="btn-accent" style="flex:1; justify-content:center; min-width:120px;"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+            <a href="tel:+94763539267" class="btn-primary" style="flex:1; justify-content:center; min-width:120px;"><i class="fas fa-phone"></i> Call Now</a>
+            <a href="https://wa.me/94763539267" target="_blank" rel="noopener noreferrer" class="btn-accent" style="flex:1; justify-content:center; min-width:120px;"><i class="fab fa-whatsapp"></i> WhatsApp</a>
           </div>
         </div>
         <div class="contact-form-liquid liquid-glass reveal">
           <h4><i class="fas fa-paper-plane" style="color:var(--primary);"></i> Get A Free Quote</h4>
           <p>Send us a message and we'll respond within 1 hour.</p>
-          <form id="contactForm">
-            <input type="text" name="user_name" placeholder="Your full name" required />
-            <input type="email" name="user_email" placeholder="Email address" required />
-            <input type="tel" name="user_phone" placeholder="Phone number" />
-            <textarea name="message" placeholder="Tell us about your project..." rows="3" required></textarea>
+          <form id="contactForm" novalidate>
+            <input type="text" name="user_name" placeholder="Your full name" required aria-label="Full name" />
+            <input type="email" name="user_email" placeholder="Email address" required aria-label="Email address" />
+            <input type="tel" name="user_phone" placeholder="Phone number" aria-label="Phone number" />
+            <textarea name="message" placeholder="Tell us about your project..." rows="3" required aria-label="Message"></textarea>
             <button type="submit" class="btn-primary" style="width:100%; justify-content:center; border:none;">Send Message</button>
           </form>
         </div>
       </div>
-
-
     </div>
   </section>
 
@@ -2385,12 +2096,12 @@
       </div>
 
       <div class="social-icons-group">
-        <a href="https://www.facebook.com/share/14qRDMhWJDA/" target="_blank" class="social-icon facebook" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-        <a href="tel:0763539267" target="_blank" class="social-icon whatsapp" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-        <a href="#" target="_blank" class="social-icon instagram" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-        <a href="#" target="_blank" class="social-icon youtube" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
-        <a href="#" target="_blank" class="social-icon twitter" aria-label="X (Twitter)"><i class="fab fa-x-twitter"></i></a>
-        <a href="#" target="_blank" class="social-icon linkedin" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+        <a href="https://www.facebook.com/share/14qRDMhWJDA/" target="_blank" rel="noopener noreferrer" class="social-icon facebook" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+        <a href="https://wa.me/94763539267" target="_blank" rel="noopener noreferrer" class="social-icon whatsapp" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+        <a href="#" target="_blank" rel="noopener noreferrer" class="social-icon instagram" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+        <a href="#" target="_blank" rel="noopener noreferrer" class="social-icon youtube" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+        <a href="#" target="_blank" rel="noopener noreferrer" class="social-icon twitter" aria-label="X (Twitter)"><i class="fab fa-x-twitter"></i></a>
+        <a href="#" target="_blank" rel="noopener noreferrer" class="social-icon linkedin" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
       </div>
 
       <p style="font-size:0.7rem; color:var(--text-muted); margin-bottom:4px;">
@@ -2408,10 +2119,9 @@
   </footer>
 
   <!-- ============================================================
-  FLOATING BUTTONS
+  FLOATING WHATSAPP BUTTON
   ============================================================ -->
-
-  <a href="https://wa.me/94763539267" target="_blank" class="floating-wa" aria-label="Chat on WhatsApp">
+  <a href="https://wa.me/94763539267" target="_blank" rel="noopener noreferrer" class="floating-wa" aria-label="Chat on WhatsApp">
     <i class="fab fa-whatsapp"></i>
   </a>
 
@@ -2427,22 +2137,25 @@
       // ============================================================
       window.addEventListener('load', function() {
         const preloader = document.getElementById('preloader');
-        setTimeout(function() {
-          preloader.classList.add('hidden');
-        }, 800);
-      });
+        if (preloader) {
+          setTimeout(function() {
+            preloader.classList.add('hidden');
+          }, 800);
+        }
+      }, { passive: true });
 
       // ============================================================
       // 2. SCROLL PROGRESS BAR
       // ============================================================
       const progressBar = document.getElementById('scrollProgress');
-
-      window.addEventListener('scroll', function() {
-        const scrollTop = window.scrollY;
-        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-        const scrollPercent = (scrollTop / docHeight) * 100;
-        progressBar.style.width = scrollPercent + '%';
-      }, { passive: true });
+      if (progressBar) {
+        window.addEventListener('scroll', function() {
+          const scrollTop = window.scrollY;
+          const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+          const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+          progressBar.style.width = scrollPercent + '%';
+        }, { passive: true });
+      }
 
       // ============================================================
       // 3. THEME (Dark mode only)
@@ -2454,13 +2167,15 @@
       // 4. NAVBAR SCROLL
       // ============================================================
       const navbar = document.getElementById('navbar');
-      window.addEventListener('scroll', function() {
-        if (window.scrollY > 50) {
-          navbar.classList.add('scrolled');
-        } else {
-          navbar.classList.remove('scrolled');
-        }
-      }, { passive: true });
+      if (navbar) {
+        window.addEventListener('scroll', function() {
+          if (window.scrollY > 50) {
+            navbar.classList.add('scrolled');
+          } else {
+            navbar.classList.remove('scrolled');
+          }
+        }, { passive: true });
+      }
 
       // ============================================================
       // 5. MOBILE NAV
@@ -2543,8 +2258,7 @@
       let countersAnimated = false;
 
       function animateCounters() {
-        if (countersAnimated) return;
-        if (!counters.length) return;
+        if (countersAnimated || !counters.length) return;
 
         const section = document.querySelector('.hero-stats');
         if (!section) return;
@@ -2602,12 +2316,20 @@
         if (!countersAnimated) animateCounters();
       }, { passive: true });
 
-      setTimeout(animateCounters, 600);
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function() {
+          setTimeout(animateCounters, 600);
+        });
+      } else {
+        setTimeout(animateCounters, 600);
+      }
 
       // ============================================================
       // 11. EMAILJS INITIALIZATION
       // ============================================================
-      emailjs.init('PD8Bxa0tEm1PbizPk');
+      if (window.emailjs) {
+        emailjs.init('PD8Bxa0tEm1PbizPk');
+      }
 
       // ============================================================
       // 11A. CONTACT FORM WITH EMAILJS
@@ -2617,16 +2339,23 @@
         form.addEventListener('submit', function(e) {
           e.preventDefault();
           
+          if (!window.emailjs) {
+            alert('Email service unavailable. Please try again later.');
+            return;
+          }
+
           const submitButton = form.querySelector('button[type="submit"]');
+          if (!submitButton) return;
+
           const originalText = submitButton.textContent;
           submitButton.textContent = 'Sending...';
           submitButton.disabled = true;
 
           const templateParams = {
-            user_name: form.querySelector('[name="user_name"]').value,
-            user_email: form.querySelector('[name="user_email"]').value,
+            user_name: form.querySelector('[name="user_name"]').value || 'Not provided',
+            user_email: form.querySelector('[name="user_email"]').value || 'Not provided',
             user_phone: form.querySelector('[name="user_phone"]').value || 'Not provided',
-            message: form.querySelector('[name="message"]').value,
+            message: form.querySelector('[name="message"]').value || 'No message',
             to_email: 'dilshantharindu212@gmail.com'
           };
 
@@ -2637,7 +2366,7 @@
               submitButton.textContent = originalText;
               submitButton.disabled = false;
             }, function(error) {
-              alert('❌ Sorry, there was an error sending your message. Please try again or call us directly.');
+              alert('❌ Sorry, there was an error sending your message. Please try again or call us directly at 076 353 9267.');
               console.error('EmailJS error:', error);
               submitButton.textContent = originalText;
               submitButton.disabled = false;
@@ -2668,33 +2397,8 @@
         }
       }
 
-      // ============================================================
-      // 13. SOCIAL ICON GLOW
-      // ============================================================
-      const socialIcons = document.querySelectorAll('.social-icon');
-
-      socialIcons.forEach(icon => {
-        icon.addEventListener('mouseenter', function() {
-          if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-            this.style.boxShadow = '0 0 30px currentColor';
-          }
-        });
-
-        icon.addEventListener('mouseleave', function() {
-          this.style.boxShadow = 'none';
-        });
-
-        icon.addEventListener('touchstart', function() {
-          this.style.transform = 'scale(0.9)';
-        }, { passive: true });
-
-        icon.addEventListener('touchend', function() {
-          this.style.transform = '';
-        }, { passive: true });
-      });
-
       console.log('🚀 RevoTech Solutions — All Features Loaded!');
-      console.log('✅ EmailJS Integration | Contact Form | Dark/Light Theme | Responsive Design');
+      console.log('✅ Performance Optimized | EmailJS Integration | Dark Theme | Responsive Design');
       console.log('📧 Email: dilshantharindu212@gmail.com');
 
     })();
