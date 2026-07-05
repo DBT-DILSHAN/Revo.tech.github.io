@@ -654,6 +654,44 @@
       align-items: center;
     }
 
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .hero-bg img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      opacity: 0.32;
+      animation: heroKenBurns 22s ease-in-out infinite alternate;
+    }
+
+    .hero-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(7, 13, 26, 0.55) 0%, var(--bg-dark) 92%),
+                  radial-gradient(ellipse at 20% 30%, rgba(15, 40, 71, 0.6), transparent 70%);
+    }
+
+    [data-theme="light"] .hero-bg::after {
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.75) 0%, var(--bg-dark) 92%),
+                  radial-gradient(ellipse at 20% 30%, rgba(220, 232, 255, 0.7), transparent 70%);
+    }
+
+    @keyframes heroKenBurns {
+      0% { transform: scale(1) translate(0, 0); }
+      100% { transform: scale(1.15) translate(-2%, -2%); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .hero-bg img { animation: none; }
+    }
+
     [data-theme="light"] .hero {
       background: radial-gradient(ellipse at 20% 30%, #dce8ff, var(--bg-dark) 80%);
     }
@@ -1914,11 +1952,11 @@
       }
 
       .hero-content h1 {
-        font-size: 2rem;
+        font-size: 1.7rem;
       }
 
       .section-title {
-        font-size: 1.6rem;
+        font-size: 1.35rem;
       }
 
       .hours-banner {
@@ -2064,6 +2102,7 @@
   HERO
   ============================================================ -->
   <section class="hero" id="home">
+    <div class="hero-bg"><img src="hero-bg.jpg" alt="Electrical panel technician at work" loading="eager"></div>
     <div class="container">
       <div class="hero-content">
         <div class="hero-badge"><i class="fas fa-bolt"></i> Professional Services</div>
