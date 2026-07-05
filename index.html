@@ -1236,6 +1236,40 @@
     }
 
     /* ============================================================
+       SOCIAL ICON AMBIENT ANIMATION (continuous float + brand glow)
+    ============================================================ */
+    @keyframes socialFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+
+    @keyframes socialGlowPulse {
+      0%, 100% { box-shadow: 0 0 0 0 transparent; }
+      50% { box-shadow: 0 0 18px 2px var(--icon-glow, rgba(0, 102, 255, 0.35)); }
+    }
+
+    .social-icon {
+      animation: socialFloat 3.2s ease-in-out infinite, socialGlowPulse 3.2s ease-in-out infinite;
+    }
+
+    .social-icon:hover {
+      animation-play-state: paused;
+    }
+
+    .social-icon.facebook  { --icon-glow: rgba(24, 119, 242, 0.45); animation-delay: 0s, 0s; }
+    .social-icon.whatsapp  { --icon-glow: rgba(37, 211, 102, 0.45); animation-delay: 0.2s, 0.2s; }
+    .social-icon.instagram { --icon-glow: rgba(228, 64, 95, 0.45); animation-delay: 0.4s, 0.4s; }
+    .social-icon.youtube   { --icon-glow: rgba(255, 0, 0, 0.45); animation-delay: 0.6s, 0.6s; }
+    .social-icon.twitter   { --icon-glow: rgba(255, 255, 255, 0.35); animation-delay: 0.8s, 0.8s; }
+    .social-icon.linkedin  { --icon-glow: rgba(10, 102, 194, 0.45); animation-delay: 1s, 1s; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .social-icon {
+        animation: none;
+      }
+    }
+
+    /* ============================================================
        WHATSAPP QUICK QUOTE MODAL
     ============================================================ */
     .whatsapp-modal-overlay {
@@ -1361,7 +1395,7 @@
     /* Floating WhatsApp Button */
     .floating-wa {
       position: fixed;
-      bottom: 80px;
+      bottom: 16px;
       right: 16px;
       z-index: 999;
       background: rgba(37, 211, 102, 0.82);
@@ -1650,7 +1684,7 @@
       }
 
       .floating-wa {
-        bottom: 90px;
+        bottom: 24px;
         right: 24px;
         width: 56px;
         height: 56px;
@@ -1847,7 +1881,7 @@
         width: 64px;
         height: 64px;
         font-size: 2.2rem;
-        bottom: 100px;
+        bottom: 28px;
         right: 28px;
       }
 
@@ -2377,8 +2411,8 @@
   FLOATING BUTTONS
   ============================================================ -->
 
-  <a href="#contact" class="floating-chat" aria-label="Contact Us">
-    <i class="fas fa-envelope"></i>
+  <a href="https://wa.me/94763539267" target="_blank" class="floating-wa" aria-label="Chat on WhatsApp">
+    <i class="fab fa-whatsapp"></i>
   </a>
 
   <!-- ============================================================
