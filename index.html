@@ -162,6 +162,40 @@
     }
 
     /* ============================================================
+       PARTICLE BACKGROUND CANVAS
+    ============================================================ */
+    .particle-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      pointer-events: none;
+      opacity: 0.4;
+    }
+
+    body {
+      position: relative;
+    }
+
+    /* Ensure content is above particles */
+    #preloader,
+    #scrollProgress,
+    .navbar,
+    .hero,
+    .about-section,
+    .services-section,
+    .contact-section,
+    .footer,
+    .cta-banner,
+    .floating-wa,
+    .floating-chat {
+      position: relative;
+      z-index: 2;
+    }
+
+    /* ============================================================
        SCROLL PROGRESS BAR
     ============================================================ */
     #scrollProgress {
@@ -2306,6 +2340,11 @@
 <body>
 
   <!-- ============================================================
+  PARTICLE BACKGROUND CANVAS
+  ============================================================ -->
+  <canvas id="particleCanvas" class="particle-canvas"></canvas>
+
+  <!-- ============================================================
   PRELOADER
   ============================================================ -->
   <div id="preloader">
@@ -2591,6 +2630,140 @@
   <script>
     (function() {
       'use strict';
+
+      // ============================================================
+      // 0. PARTICLE BACKGROUND EFFECT
+      // ============================================================
+      const canvas = document.getElementById('particleCanvas');
+      const ctx = canvas.getContext('2d');
+      let animationId = null;
+
+      // Set canvas size
+      function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+      resizeCanvas();
+      window.addEventListener('resize', resizeCanvas);
+
+      // Particle class
+      class Particle {
+        constructor() {
+          this.x = Math.random() * canvas.width;
+          this.y = Math.random() * canvas.height;
+          this.size = Math.random() * 2 + 1;
+          this.speedX = (Math.random() - 0.5) * 0.5;
+          this.speedY = (Math.random() - 0.5) * 0.5;
+          this.opacity = Math.random() * 0.5 + 0.2;
+          this.color = Math.random() > 0.5 ? 'rgba(255, 140, 0' : 'rgba(255, 179, 71';
+        }
+
+        update() {
+          this.x += this.speedX;
+          this.y += this.speedY;
+
+          // Wrap around edges
+          if (this.x > canvas.width) this.x = 0;
+          if (this.x < 0) this.x = canvas.width;
+          if (this.y > canvas.height) this.y = 0;
+          if (this.y < 0) this.y = canvas.height;
+        }
+
+        draw() {
+          ctx.fillStyle = this.color + ', ' + this.opacity + ')';
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+
+      // Create particles
+      const particleCount = window.innerWidth < 768 ? 30 : 50;
+      let particles = [];
+
+      function initParticles() {
+        particles = [];
+        for (let i = 0; i < particleCount; i++) {
+          particles.push(new Particle());
+        }
+      }
+      initParticles();
+
+      // Connection lines
+      function connectParticles() {
+        const maxDistance = 150;
+
+        for (let i = 0; i < particles.length; i++) {
+          for (let j = i + 1; j < particles.length; j++) {
+            const dx = particles[i].x - particles[j].x;
+            const dy = particles[i].y - particles[j].y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+
+            if (distance < maxDistance) {
+              ctx.strokeStyle = `rgba(255, 140, 0, ${0.2 * (1 - distance / maxDistance)})`;
+              ctx.lineWidth = 0.5;
+              ctx.beginPath();
+              ctx.moveTo(particles[i].x, particles[i].y);
+              ctx.lineTo(particles[j].x, particles[j].y);
+              ctx.stroke();
+            }
+          }
+        }
+      }
+
+      // Mouse interaction
+      let mouseX = null;
+      let mouseY = null;
+
+      window.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+      });
+
+      window.addEventListener('mouseleave', () => {
+        mouseX = null;
+        mouseY = null;
+      });
+
+      // Animation loop
+      function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.globalCompositeOperation = 'lighter';
+
+        particles.forEach((particle) => {
+          particle.update();
+          particle.draw();
+
+          // Mouse repulsion
+          if (mouseX !== null && mouseY !== null) {
+            const dx = mouseX - particle.x;
+            const dy = mouseY - particle.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+
+            if (distance < 100) {
+              const angle = Math.atan2(dy, dx);
+              particle.speedX -= Math.cos(angle) * 0.2;
+              particle.speedY -= Math.sin(angle) * 0.2;
+            }
+          }
+        });
+
+        connectParticles();
+        ctx.globalCompositeOperation = 'source-over';
+        animationId = requestAnimationFrame(animate);
+      }
+
+      // Start animation
+      animate();
+
+      // Reinitialize on resize
+      let resizeTimeout;
+      window.addEventListener('resize', () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+          initParticles();
+        }, 300);
+      });
 
       // ============================================================
       // 1. PRELOADER
