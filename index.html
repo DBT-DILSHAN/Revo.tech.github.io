@@ -376,7 +376,7 @@
        BUTTONS
     ============================================================ */
     .btn-primary {
-      background: linear-gradient(135deg, rgba(0, 102, 255, 0.85), rgba(0, 68, 179, 0.85));
+      background: linear-gradient(135deg, rgba(255, 140, 0, 0.85), rgba(204, 106, 0, 0.85));
       border: 1px solid rgba(255, 255, 255, 0.15);
       padding: 12px 28px;
       border-radius: 60px;
@@ -384,7 +384,7 @@
       font-size: 0.9rem;
       color: #fff;
       transition: all var(--transition);
-      box-shadow: 0 4px 20px rgba(0, 102, 255, 0.25);
+      box-shadow: 0 4px 20px rgba(255, 140, 0, 0.25);
       cursor: pointer;
       display: inline-flex;
       align-items: center;
@@ -393,11 +393,29 @@
       text-decoration: none;
       min-height: 44px;
       touch-action: manipulation;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-primary::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      transition: left 0.5s ease;
     }
 
     .btn-primary:hover {
-      transform: translateY(-2px) scale(1.02);
-      box-shadow: 0 6px 30px rgba(0, 102, 255, 0.35);
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 8px 40px rgba(255, 140, 0, 0.4), 0 0 20px rgba(255, 140, 0, 0.2);
+      animation: none;
+    }
+
+    .btn-primary:hover::before {
+      left: 100%;
     }
 
     .btn-outline {
@@ -422,8 +440,10 @@
 
     .btn-outline:hover {
       border-color: var(--primary);
-      color: var(--primary-light);
-      transform: translateY(-2px);
+      color: var(--primary);
+      background: rgba(255, 140, 0, 0.05);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 30px rgba(255, 140, 0, 0.15);
     }
 
     .btn-accent {
@@ -893,7 +913,6 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      position: relative;
     }
 
     .hero-card-liquid {
@@ -950,43 +969,6 @@
       font-size: 0.7rem;
       border: 1px solid var(--glass-border);
       color: var(--text-secondary);
-    }
-
-    /* ============================================================
-       REVO TECH LOGO CARD
-    ============================================================ */
-    .revo-logo-card {
-      position: absolute;
-      top: -40px;
-      right: -40px;
-      width: 280px;
-      height: 280px;
-      background: linear-gradient(135deg, rgba(255, 140, 0, 0.08), rgba(255, 140, 0, 0.02));
-      backdrop-filter: blur(20px) saturate(180%);
-      border: 1px solid rgba(255, 140, 0, 0.1);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 20px 60px rgba(255, 140, 0, 0.2), inset 0 0 30px rgba(255, 255, 255, 0.05);
-      animation: logoFloat 6s ease-in-out infinite;
-      z-index: 1;
-    }
-
-    .revo-logo-img {
-      width: 200px;
-      height: 200px;
-      object-fit: contain;
-      filter: drop-shadow(0 10px 30px rgba(255, 140, 0, 0.3));
-    }
-
-    @keyframes logoFloat {
-      0%, 100% {
-        transform: translateY(0px) rotate(0deg);
-      }
-      50% {
-        transform: translateY(-20px) rotate(2deg);
-      }
     }
 
     /* ============================================================
@@ -1122,7 +1104,7 @@
       inset: 0;
       background: radial-gradient(
         circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
-        rgba(0, 102, 255, 0.04) 0%,
+        rgba(255, 140, 0, 0.04) 0%,
         transparent 60%
       );
       pointer-events: none;
@@ -1135,16 +1117,16 @@
     }
 
     .service-card-liquid:hover {
-      transform: translateY(-8px) scale(1.02);
-      border-color: rgba(0, 102, 255, 0.12);
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15), 0 0 40px rgba(0, 102, 255, 0.02);
+      transform: translateY(-12px) scale(1.03);
+      border-color: rgba(255, 140, 0, 0.2);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15), 0 0 40px rgba(255, 140, 0, 0.1);
     }
 
     .service-card-liquid .icon-wrap {
       width: 60px;
       height: 60px;
       margin: 0 auto 12px;
-      background: linear-gradient(135deg, rgba(0, 102, 255, 0.08), rgba(0, 102, 255, 0.02));
+      background: linear-gradient(135deg, rgba(255, 140, 0, 0.08), rgba(255, 140, 0, 0.02));
       border-radius: 50%;
       display: flex;
       align-items: center;
@@ -1154,11 +1136,17 @@
       transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
+    .service-card-liquid:hover .icon-wrap {
+      animation: bounce 0.6s ease;
+      background: linear-gradient(135deg, rgba(255, 140, 0, 0.15), rgba(255, 140, 0, 0.05));
+      box-shadow: 0 0 20px rgba(255, 140, 0, 0.3);
+    }
+
     .service-card-liquid .service-image {
       width: 100%;
       height: 140px;
       margin: -24px -20px 16px -20px;
-      background: linear-gradient(135deg, rgba(0, 102, 255, 0.1) 0%, rgba(0, 102, 255, 0.02) 100%);
+      background: linear-gradient(135deg, rgba(255, 140, 0, 0.1) 0%, rgba(255, 140, 0, 0.02) 100%);
       border-radius: var(--radius-md) var(--radius-md) 0 0;
       display: flex;
       align-items: center;
@@ -1170,11 +1158,15 @@
       overflow: hidden;
     }
 
+    .service-card-liquid:hover .service-image {
+      animation: float 0.8s ease infinite;
+    }
+
     .service-card-liquid .service-image::before {
       content: '';
       position: absolute;
       inset: 0;
-      background: radial-gradient(circle at center, rgba(0, 102, 255, 0.08), transparent);
+      background: radial-gradient(circle at center, rgba(255, 140, 0, 0.08), transparent);
       opacity: 0;
       transition: opacity 0.4s ease;
       z-index: 2;
@@ -1496,6 +1488,114 @@
       50% { box-shadow: 0 4px 50px rgba(37, 211, 102, 0.5), 0 0 80px rgba(37, 211, 102, 0.05); }
     }
 
+    /* ============================================================
+       ENHANCED ANIMATIONS
+    ============================================================ */
+    @keyframes slideInUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes slideInDown {
+      from { opacity: 0; transform: translateY(-40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes slideInLeft {
+      from { opacity: 0; transform: translateX(-60px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes slideInRight {
+      from { opacity: 0; transform: translateX(60px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes fadeInScale {
+      from { opacity: 0; transform: scale(0.85); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes rotateIn {
+      from { opacity: 0; transform: rotate(-10deg) scale(0.8); }
+      to { opacity: 1; transform: rotate(0deg) scale(1); }
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+    }
+
+    @keyframes glow {
+      0%, 100% { box-shadow: 0 0 20px rgba(255, 140, 0, 0.4); }
+      50% { box-shadow: 0 0 40px rgba(255, 140, 0, 0.7), 0 0 60px rgba(255, 140, 0, 0.3); }
+    }
+
+    @keyframes textGlow {
+      0%, 100% { text-shadow: 0 0 10px rgba(255, 140, 0, 0); }
+      50% { text-shadow: 0 0 20px rgba(255, 140, 0, 0.6); }
+    }
+
+    @keyframes shimmer {
+      0% { background-position: -1000px 0; }
+      100% { background-position: 1000px 0; }
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.6; }
+    }
+
+    @keyframes swing {
+      20% { transform: rotate(15deg); }
+      40% { transform: rotate(-10deg); }
+      60% { transform: rotate(5deg); }
+      80% { transform: rotate(-5deg); }
+      100% { transform: rotate(0deg); }
+    }
+
+    @keyframes flip {
+      0% { transform: perspective(400px) rotateY(0); }
+      100% { transform: perspective(400px) rotateY(360deg); }
+    }
+
+    @keyframes wave {
+      0%, 100% { transform: translateY(0px); }
+      25% { transform: translateY(-10px); }
+      50% { transform: translateY(0px); }
+      75% { transform: translateY(-5px); }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-15px); }
+    }
+
+    @keyframes heartBeat {
+      0%, 100% { transform: scale(1); }
+      25% { transform: scale(1.3); }
+      50% { transform: scale(1.1); }
+    }
+
+    /* ============================================================
+       ANIMATION UTILITY CLASSES
+    ============================================================ */
+    .animate-slide-up { animation: slideInUp 0.6s ease-out; }
+    .animate-slide-down { animation: slideInDown 0.6s ease-out; }
+    .animate-slide-left { animation: slideInLeft 0.6s ease-out; }
+    .animate-slide-right { animation: slideInRight 0.6s ease-out; }
+    .animate-fade-scale { animation: fadeInScale 0.6s ease-out; }
+    .animate-rotate-in { animation: rotateIn 0.6s ease-out; }
+    .animate-bounce { animation: bounce 2s ease-in-out infinite; }
+    .animate-glow { animation: glow 2s ease-in-out infinite; }
+    .animate-text-glow { animation: textGlow 2s ease-in-out infinite; }
+    .animate-pulse { animation: pulseGlow 2s ease-in-out infinite; }
+    .animate-swing { animation: swing 1s ease-in-out infinite; }
+    .animate-float { animation: float 3s ease-in-out infinite; }
+    .animate-heartbeat { animation: heartBeat 1.3s ease-in-out infinite; }
+    .animate-wave { animation: wave 1.5s ease-in-out infinite; }
+    .animate-flip { animation: flip 2s ease-in-out infinite; }
+
     .floating-chat {
       position: fixed;
       bottom: 16px;
@@ -1684,13 +1784,6 @@
       justify-content: center;
       gap: 12px;
       margin-bottom: 14px;
-    }
-
-    .footer .footer-logo-img {
-      width: 50px;
-      height: 50px;
-      object-fit: contain;
-      filter: drop-shadow(0 4px 12px rgba(255, 140, 0, 0.2));
     }
 
     .footer .footer-logo .logo-icon {
@@ -2062,18 +2155,6 @@
         text-align: center;
       }
 
-      .revo-logo-card {
-        width: 200px;
-        height: 200px;
-        top: -30px;
-        right: -30px;
-      }
-
-      .revo-logo-img {
-        width: 140px;
-        height: 140px;
-      }
-
       .about-grid {
         grid-template-columns: 1fr;
         text-align: center;
@@ -2300,9 +2381,6 @@
       </div>
 
       <div class="hero-image">
-        <div class="revo-logo-card">
-          <img src="revo-logo.png" alt="REVO TECH SOLUTION Logo" class="revo-logo-img" loading="lazy">
-        </div>
         <div class="hero-card-liquid" id="heroCard">
           <div class="icon-wrap"><i class="fas fa-shield-halved"></i></div>
           <h3>Your Trusted Electrical Services With Care</h3>
@@ -2470,7 +2548,6 @@
   <footer class="footer">
     <div class="container">
       <div class="footer-logo">
-        <img src="revo-logo.png" alt="REVO TECH SOLUTION Logo" class="footer-logo-img">
         <div class="logo-text-group">
           <span class="logo-text">RevoTECH<span class="trademark">™</span></span>
           <span class="logo-sub">SOLUTIONS</span>
