@@ -10,6 +10,15 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800;14..32,900&family=Orbitron:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  
+  <!-- GOOGLE ANALYTICS -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX'); // Replace with your GA4 ID
+  </script>
   <style>
     /* ============================================================
        ROOT VARIABLES (Dark/Light Theme)
@@ -87,17 +96,19 @@
     }
 
     /* ============================================================
-       PRELOADER
+       LOADING ANIMATION
     ============================================================ */
     #preloader {
       position: fixed;
       inset: 0;
       z-index: 9999;
-      background: var(--preloader-bg);
+      background: var(--bg-dark);
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: opacity 0.8s ease, visibility 0.8s ease;
+      transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.8s ease;
+      opacity: 1;
+      visibility: visible;
     }
 
     #preloader.hidden {
@@ -106,58 +117,65 @@
       pointer-events: none;
     }
 
-    .loader {
-      position: relative;
-      width: 120px;
-      height: 8px;
+    .loader-container {
       display: flex;
+      flex-direction: column;
       align-items: center;
-      justify-content: center;
-      background: rgba(255, 255, 255, 0.08);
-      border-radius: 10px;
-      border: 1px solid rgba(255, 140, 0, 0.2);
-      overflow: hidden;
+      gap: 24px;
+      animation: fadeIn 0.6s ease-out;
     }
 
-    .loader-dot {
-      position: absolute;
-      height: 100%;
-      left: 0;
-      background: linear-gradient(90deg, var(--primary), #FFB347, var(--primary));
-      border-radius: 10px;
-      animation: fillLoad 2s ease-in-out infinite;
-      box-shadow: 0 0 15px var(--primary), 0 0 25px rgba(255, 140, 0, 0.5), inset 0 0 10px rgba(255, 255, 255, 0.3);
+    .loader-spinner {
+      width: 60px;
+      height: 60px;
+      border: 3px solid rgba(255, 140, 0, 0.15);
+      border-top: 3px solid var(--primary);
+      border-right: 3px solid rgba(255, 140, 0, 0.5);
+      border-radius: 50%;
+      animation: spin 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
+      box-shadow: 
+        0 0 30px rgba(255, 140, 0, 0.4),
+        inset 0 0 20px rgba(255, 140, 0, 0.1);
     }
 
-    .loader-dot:nth-child(1) {
-      width: 100%;
-      animation-delay: 0s;
+    .loader-text {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      font-weight: 600;
+      letter-spacing: 4px;
+      animation: textPulse 2s ease-in-out infinite;
+      margin: 0;
+      text-transform: uppercase;
     }
 
-    .loader-dot:nth-child(2) {
-      width: 100%;
-      animation-delay: 2s;
-      opacity: 0;
-    }
-
-    .loader-dot:nth-child(3) {
-      width: 100%;
-      animation-delay: 4s;
-      opacity: 0;
-    }
-
-    @keyframes fillLoad {
+    @keyframes spin {
       0% {
-        width: 0%;
-        opacity: 1;
-      }
-      50% {
-        width: 100%;
-        opacity: 1;
+        transform: rotate(0deg);
       }
       100% {
-        width: 100%;
+        transform: rotate(360deg);
+      }
+    }
+
+    @keyframes textPulse {
+      0%, 100% {
+        opacity: 0.6;
+        transform: translateY(0);
+      }
+      50% {
+        opacity: 1;
+        transform: translateY(-2px);
+      }
+    }
+
+    @keyframes fadeIn {
+      from {
         opacity: 0;
+        transform: scale(0.95);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
       }
     }
 
@@ -1851,6 +1869,39 @@
     }
 
     /* ============================================================
+       VISIT COUNTER
+    ============================================================ */
+    .visit-counter-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px solid rgba(255, 140, 0, 0.1);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .visit-counter-container i {
+      color: var(--primary);
+      font-size: 0.9rem;
+    }
+
+    .visit-count {
+      font-weight: 600;
+      color: var(--primary-light);
+      background: rgba(255, 140, 0, 0.1);
+      padding: 2px 8px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 140, 0, 0.2);
+    }
+
+    .visit-counter-container span {
+      opacity: 0.8;
+    }
+
+    /* ============================================================
        SCROLL REVEAL
     ============================================================ */
     .reveal {
@@ -2345,13 +2396,12 @@
   <canvas id="particleCanvas" class="particle-canvas"></canvas>
 
   <!-- ============================================================
-  PRELOADER
+  LOADING ANIMATION
   ============================================================ -->
   <div id="preloader">
-    <div class="loader">
-      <div class="loader-dot"></div>
-      <div class="loader-dot"></div>
-      <div class="loader-dot"></div>
+    <div class="loader-container">
+      <div class="loader-spinner"></div>
+      <p class="loader-text">POWERING UP</p>
     </div>
   </div>
 
@@ -2613,6 +2663,13 @@
       <p style="margin-top:4px; font-size:0.7rem; color:var(--text-muted);">
         <i class="fas fa-shield-halved" style="color:var(--primary);"></i> Protecting what matters most
       </p>
+      
+      <!-- Visit Counter -->
+      <div class="visit-counter-container">
+        <i class="fas fa-user-eye"></i>
+        <span>Visits:</span>
+        <span class="visit-count" id="visitCount">0</span>
+      </div>
     </div>
   </footer>
 
@@ -2766,13 +2823,15 @@
       });
 
       // ============================================================
-      // 1. PRELOADER
+      // 1. LOADING ANIMATION
       // ============================================================
       window.addEventListener('load', function() {
         const preloader = document.getElementById('preloader');
-        setTimeout(function() {
-          preloader.classList.add('hidden');
-        }, 800);
+        if (preloader) {
+          setTimeout(function() {
+            preloader.classList.add('hidden');
+          }, 800);
+        }
       });
 
       // ============================================================
@@ -3070,9 +3129,214 @@
         }, { passive: true });
       });
 
+      // ============================================================
+      // 14. VISIT COUNTER (localStorage based)
+      // ============================================================
+      function initVisitCounter() {
+        const visitCountElement = document.getElementById('visitCount');
+        if (!visitCountElement) return;
+
+        const STORAGE_KEY = 'revotech_visit_count';
+        const LAST_VISIT_KEY = 'revotech_last_visit';
+        const VISIT_EXPIRY_HOURS = 24;
+
+        let visitCount = parseInt(localStorage.getItem(STORAGE_KEY)) || 0;
+        const lastVisit = localStorage.getItem(LAST_VISIT_KEY);
+        const now = Date.now();
+
+        // Check if it's a new visit (beyond 24 hours)
+        if (!lastVisit || (now - parseInt(lastVisit)) > (VISIT_EXPIRY_HOURS * 60 * 60 * 1000)) {
+          visitCount++;
+          localStorage.setItem(STORAGE_KEY, visitCount.toString());
+          localStorage.setItem(LAST_VISIT_KEY, now.toString());
+          console.log('👁️ New visit recorded! Total visits:', visitCount);
+        } else {
+          console.log('👁️ Welcome back! Total visits:', visitCount);
+        }
+
+        // Display counter with nice formatting
+        visitCountElement.textContent = visitCount.toLocaleString();
+        
+        // Add subtle animation on load
+        visitCountElement.style.animation = 'pulse 0.6s ease-out';
+      }
+
+      initVisitCounter();
+
+      // ============================================================
+      // 15. VISITOR NOTIFICATION SYSTEM
+      // ============================================================
+      async function sendVisitorNotification() {
+        try {
+          // Collect visitor data
+          const visitorData = {
+            timestamp: new Date().toISOString(),
+            url: window.location.href,
+            userAgent: navigator.userAgent,
+            language: navigator.language,
+            screenResolution: `${window.screen.width}x${window.screen.height}`,
+            timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+            referrer: document.referrer || 'Direct',
+            pageTitle: document.title
+          };
+
+          // Get device type
+          const userAgent = navigator.userAgent.toLowerCase();
+          let deviceType = 'Desktop';
+          if (/mobile|android|iphone|ipod/.test(userAgent)) {
+            deviceType = 'Mobile';
+          } else if (/tablet|ipad/.test(userAgent)) {
+            deviceType = 'Tablet';
+          }
+          visitorData.deviceType = deviceType;
+
+          // Try to get location (requires user permission)
+          if (navigator.geolocation && !localStorage.getItem('locationDenied')) {
+            navigator.geolocation.getCurrentPosition(
+              (position) => {
+                visitorData.location = {
+                  latitude: position.coords.latitude,
+                  longitude: position.coords.longitude,
+                  accuracy: position.coords.accuracy
+                };
+                processVisitorNotification(visitorData);
+              },
+              () => {
+                localStorage.setItem('locationDenied', 'true');
+                processVisitorNotification(visitorData);
+              },
+              { timeout: 3000 }
+            );
+          } else {
+            processVisitorNotification(visitorData);
+          }
+
+          function processVisitorNotification(data) {
+            // 1. SEND TO DISCORD WEBHOOK
+            sendToDiscord(data);
+            
+            // 2. SEND EMAIL NOTIFICATION
+            sendEmailNotification(data);
+            
+            // 3. TRACK IN GOOGLE ANALYTICS
+            if (window.gtag) {
+              gtag('event', 'page_view', {
+                'page_title': data.pageTitle,
+                'page_path': data.url,
+                'device_type': data.deviceType
+              });
+            }
+
+            console.log('📊 Visitor tracked:', data);
+          }
+
+          // DISCORD WEBHOOK
+          function sendToDiscord(data) {
+            const DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1528094770281451580/i-aGvOxqBhhWvKVXo4ETLq5vq7d7mOlsNwq8gAeTMqvgmz4I3zR9p1MbnPeMwnNbOL2Y';
+            
+            if (!DISCORD_WEBHOOK_URL || DISCORD_WEBHOOK_URL.includes('YOUR_')) {
+              console.log('⚠️ Discord webhook not configured');
+              return;
+            }
+
+            const embed = {
+              title: '🚀 New Visitor!',
+              color: 16755712, // Orange #FF8C00
+              fields: [
+                {
+                  name: '📍 Device Type',
+                  value: data.deviceType,
+                  inline: true
+                },
+                {
+                  name: '🌍 Language',
+                  value: data.language,
+                  inline: true
+                },
+                {
+                  name: '📱 Screen',
+                  value: data.screenResolution,
+                  inline: false
+                },
+                {
+                  name: '🔗 Page',
+                  value: data.pageTitle,
+                  inline: true
+                },
+                {
+                  name: '🌐 Referrer',
+                  value: data.referrer.substring(0, 100),
+                  inline: false
+                },
+                {
+                  name: '⏰ Time',
+                  value: new Date(data.timestamp).toLocaleString(),
+                  inline: false
+                },
+                {
+                  name: '🕐 Timezone',
+                  value: data.timezone,
+                  inline: true
+                }
+              ],
+              timestamp: data.timestamp
+            };
+
+            if (data.location) {
+              embed.fields.push({
+                name: '📌 Location',
+                value: `Lat: ${data.location.latitude.toFixed(4)}, Lon: ${data.location.longitude.toFixed(4)}`,
+                inline: false
+              });
+            }
+
+            fetch(DISCORD_WEBHOOK_URL, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ embeds: [embed] })
+            }).catch(err => console.log('Discord send error:', err));
+          }
+
+          // EMAIL NOTIFICATION
+          function sendEmailNotification(data) {
+            const emailParams = {
+              to_email: 'revotechsolutions.info@gmail.com',
+              visitor_device: data.deviceType,
+              visitor_language: data.language,
+              visitor_screen: data.screenResolution,
+              visitor_page: data.pageTitle,
+              visitor_referrer: data.referrer,
+              visitor_timezone: data.timezone,
+              visitor_time: new Date(data.timestamp).toLocaleString(),
+              visitor_location: data.location 
+                ? `Lat: ${data.location.latitude.toFixed(4)}, Lon: ${data.location.longitude.toFixed(4)}`
+                : 'Location not available'
+            };
+
+            emailjs.send(
+              'service_0k4mhme',
+              'template_visitor_alert',
+              emailParams
+            ).catch(err => console.log('Email notification error:', err));
+          }
+
+        } catch (error) {
+          console.error('❌ Visitor notification error:', error);
+        }
+      }
+
+      // Send notification on page load (but wait for page to fully load)
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', sendVisitorNotification);
+      } else {
+        sendVisitorNotification();
+      }
+
+
       console.log('🚀 RevoTech Solutions — All Features Loaded!');
-      console.log('✅ EmailJS Integration | Contact Form | Dark/Light Theme | Responsive Design');
+      console.log('✅ EmailJS Integration | Contact Form | Dark/Light Theme | Visit Counter | Responsive Design');
       console.log('📧 Email: revotechsolutions.info@gmail.com');
+      console.log('👁️ Visit tracking enabled via localStorage');
 
     })();
   </script>
