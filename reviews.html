@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <title>Customer Reviews · RevoTech Solutions</title>
+  <meta name="description" content="Read customer reviews and ratings for RevoTech Solutions electrical services." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800;14..32,900&family=Orbitron:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    :root {
+      --primary: #FF8C00;
+      --primary-dark: #CC6A00;
+      --primary-light: #FFB347;
+      --accent: #FF8C00;
+      --accent-glow: rgba(255, 140, 0, 0.4);
+      --radius-xl: 28px;
+      --radius-lg: 20px;
+      --radius-md: 14px;
+      --transition: 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      --font: 'Inter', -apple-system, sans-serif;
+      --logo-font: 'Orbitron', 'Inter', sans-serif;
+      --container-padding: 16px;
+      --section-padding: 50px 0;
+    }
+
+    [data-theme="dark"] {
+      --bg-dark: #0A0A0A;
+      --glass-bg: rgba(10, 10, 10, 0.45);
+      --glass-border: rgba(255, 255, 255, 0.05);
+      --text-primary: #ffffff;
+      --text-secondary: #b0c7e0;
+      --text-muted: #7a94b8;
+      --shadow-glow: 0 20px 60px rgba(0, 0, 0, 0.5);
+      --card-bg: rgba(255, 255, 255, 0.02);
+      --input-bg: rgba(0, 0, 0, 0.2);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg-dark);
+      color: var(--text-primary);
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    ::-webkit-scrollbar {
+      width: 5px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--bg-dark);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--primary);
+      border-radius: 10px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 var(--container-padding);
+    }
+
+    /* Navbar */
+    nav {
+      background: var(--bg-dark);
+      border-bottom: 1px solid var(--glass-border);
+      padding: 16px 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(10px);
+    }
+
+    nav .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-family: var(--logo-font);
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--primary);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    nav a.back-btn {
+      padding: 8px 16px;
+      background: rgba(255, 140, 0, 0.1);
+      border: 1px solid var(--primary);
+      border-radius: var(--radius-md);
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s;
+    }
+
+    nav a.back-btn:hover {
+      background: var(--primary);
+      color: white;
+    }
+
+    /* Header */
+    .reviews-header {
+      padding: 60px 0 40px;
+      text-align: center;
+      background: linear-gradient(135deg, rgba(255, 140, 0, 0.1), rgba(255, 140, 0, 0.05));
+      border-bottom: 1px solid var(--glass-border);
+    }
+
+    .reviews-header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .reviews-header p {
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+      margin-bottom: 20px;
+    }
+
+    .reviews-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 20px;
+      margin-top: 30px;
+    }
+
+    .stat-card {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 5px;
+    }
+
+    .stat-label {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+
+    /* Filters */
+    .reviews-controls {
+      padding: 30px 0;
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .filter-btn {
+      padding: 8px 16px;
+      background: rgba(255, 140, 0, 0.1);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-md);
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.3s;
+      font-weight: 500;
+    }
+
+    .filter-btn.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: white;
+    }
+
+    .filter-btn:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    /* Reviews Grid */
+    .reviews-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 25px;
+      margin-bottom: 40px;
+    }
+
+    .review-card {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-lg);
+      padding: 25px;
+      backdrop-filter: blur(10px);
+      transition: all var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .review-card:hover {
+      border-color: var(--primary);
+      box-shadow: 0 0 30px rgba(255, 140, 0, 0.2);
+      transform: translateY(-8px);
+    }
+
+    .review-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--primary), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .review-card:hover::before {
+      opacity: 1;
+    }
+
+    .review-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 15px;
+      gap: 10px;
+      z-index: 1;
+      position: relative;
+    }
+
+    .reviewer-info h4 {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: var(--text-primary);
+    }
+
+    .review-date {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .rating-display {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 4px;
+      white-space: nowrap;
+    }
+
+    .rating-stars {
+      font-size: 18px;
+      letter-spacing: 2px;
+    }
+
+    .rating-value {
+      font-weight: 700;
+      font-size: 16px;
+      color: var(--primary);
+    }
+
+    .rating-bar-container {
+      width: 100%;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 15px;
+    }
+
+    .rating-bar {
+      height: 100%;
+      border-radius: 4px;
+      transition: width 0.6s ease, background 0.3s ease;
+      box-shadow: 0 0 15px currentColor;
+    }
+
+    .review-text {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 15px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .review-footer {
+      display: flex;
+      gap: 10px;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 15px;
+      border-top: 1px solid var(--glass-border);
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .verified-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 8px;
+      background: rgba(16, 185, 129, 0.1);
+      border-radius: 4px;
+      color: #10b981;
+      font-weight: 500;
+    }
+
+    /* Add Review Form */
+    .add-review-section {
+      margin-bottom: 50px;
+      background: linear-gradient(135deg, rgba(255, 140, 0, 0.05), rgba(255, 140, 0, 0.02));
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-xl);
+      padding: 40px;
+    }
+
+    .add-review-section h2 {
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+      color: var(--text-primary);
+    }
+
+    .add-review-section p {
+      color: var(--text-secondary);
+      margin-bottom: 25px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-group label {
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      font-size: 14px;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      padding: 12px 15px;
+      background: var(--input-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-md);
+      color: var(--text-primary);
+      font-family: var(--font);
+      font-size: 14px;
+      transition: all 0.3s;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 15px rgba(255, 140, 0, 0.3);
+    }
+
+    .form-group textarea {
+      grid-column: 1 / -1;
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    .submit-btn {
+      grid-column: 1 / -1;
+      padding: 14px 30px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      border: none;
+      border-radius: var(--radius-md);
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .submit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(255, 140, 0, 0.3);
+    }
+
+    /* Empty State */
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--text-muted);
+    }
+
+    .empty-state i {
+      font-size: 3rem;
+      margin-bottom: 20px;
+      color: var(--text-muted);
+      opacity: 0.5;
+    }
+
+    /* Loading */
+    .loading {
+      text-align: center;
+      padding: 40px;
+      color: var(--text-secondary);
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--glass-border);
+      padding: 30px 0;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+
+    @media (max-width: 768px) {
+      .reviews-header h1 {
+        font-size: 2rem;
+      }
+
+      .reviews-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .reviews-controls {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .filter-btn {
+        width: 100%;
+      }
+
+      .add-review-section {
+        padding: 25px;
+      }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav>
+    <div class="container">
+      <a href="index.html" class="logo">
+        <i class="fas fa-bolt"></i> RevoTech
+      </a>
+      <a href="index.html" class="back-btn">
+        <i class="fas fa-arrow-left"></i> Back to Home
+      </a>
+    </div>
+  </nav>
+
+  <!-- Header -->
+  <header class="reviews-header">
+    <div class="container">
+      <h1>Customer Reviews</h1>
+      <p>See what our satisfied clients have to say about our services</p>
+      
+      <div class="reviews-stats">
+        <div class="stat-card">
+          <div class="stat-value" id="totalReviews">0</div>
+          <div class="stat-label">Total Reviews</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="avgRating">0.0</div>
+          <div class="stat-label">Average Rating</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="satisfiedPercentage">0%</div>
+          <div class="stat-label">Satisfied Clients</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Add Review Section -->
+    <section class="add-review-section">
+      <h2><i class="fas fa-pen-fancy"></i> Share Your Experience</h2>
+      <p>Help others discover our quality service by leaving a review</p>
+      
+      <form id="reviewForm" class="form-grid">
+        <div class="form-group">
+          <label for="reviewName">Your Name *</label>
+          <input type="text" id="reviewName" placeholder="Enter your full name" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="reviewRating">Rating (1-5) *</label>
+          <select id="reviewRating" required>
+            <option value="">Select your rating</option>
+            <option value="5">⭐⭐⭐⭐⭐ Excellent (5.0)</option>
+            <option value="4.5">⭐⭐⭐⭐ Very Good (4.5)</option>
+            <option value="4">⭐⭐⭐⭐ Good (4.0)</option>
+            <option value="3.5">⭐⭐⭐ Good (3.5)</option>
+            <option value="3">⭐⭐⭐ Average (3.0)</option>
+            <option value="2.5">⭐⭐ Fair (2.5)</option>
+            <option value="2">⭐⭐ Poor (2.0)</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="reviewComment">Your Review *</label>
+          <textarea id="reviewComment" placeholder="Share your experience with RevoTech Solutions. What did you like? What could be improved?" required></textarea>
+        </div>
+        
+        <button type="submit" class="submit-btn">
+          <i class="fas fa-paper-plane"></i> Submit Review
+        </button>
+      </form>
+    </section>
+
+    <!-- Filters -->
+    <div class="reviews-controls">
+      <label style="color: var(--text-secondary); font-weight: 500;">Filter by rating:</label>
+      <button class="filter-btn active" data-filter="all">All Reviews</button>
+      <button class="filter-btn" data-filter="5">⭐⭐⭐⭐⭐ 5 Stars</button>
+      <button class="filter-btn" data-filter="4">⭐⭐⭐⭐ 4+ Stars</button>
+      <button class="filter-btn" data-filter="3">⭐⭐⭐ 3+ Stars</button>
+    </div>
+
+    <!-- Reviews Grid -->
+    <section id="reviewsGrid" class="reviews-grid"></section>
+
+    <!-- Empty State -->
+    <div id="emptyState" class="empty-state" style="display: none;">
+      <i class="fas fa-inbox"></i>
+      <h3>No reviews yet</h3>
+      <p>Be the first to share your experience with RevoTech Solutions!</p>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>&copy; 2024 RevoTech Solutions. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    // ============================================================
+    // REVIEWS SYSTEM FOR reviews.html
+    // ============================================================
+    
+    function initReviewsPage() {
+      const reviewForm = document.getElementById('reviewForm');
+      const reviewsGrid = document.getElementById('reviewsGrid');
+      const emptyState = document.getElementById('emptyState');
+      const filterBtns = document.querySelectorAll('.filter-btn');
+      let currentFilter = 'all';
+
+      // Load reviews from localStorage
+      function loadReviews() {
+        const stored = localStorage.getItem('revotech_reviews');
+        return stored ? JSON.parse(stored) : [];
+      }
+
+      // Save reviews to localStorage
+      function saveReviews(reviews) {
+        localStorage.setItem('revotech_reviews', JSON.stringify(reviews));
+      }
+
+      // Get color based on rating
+      function getRatingColor(rating) {
+        if (rating >= 4.5) return '#10b981'; // Green
+        if (rating >= 3.5) return '#f59e0b'; // Amber
+        if (rating >= 2.5) return '#f97316'; // Orange
+        return '#ef4444'; // Red
+      }
+
+      // Update stats
+      function updateStats() {
+        const reviews = loadReviews();
+        document.getElementById('totalReviews').textContent = reviews.length;
+        
+        if (reviews.length > 0) {
+          const avgRating = (reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length).toFixed(1);
+          const satisfiedCount = reviews.filter(r => r.rating >= 4).length;
+          const satisfiedPercentage = Math.round((satisfiedCount / reviews.length) * 100);
+          
+          document.getElementById('avgRating').textContent = avgRating;
+          document.getElementById('satisfiedPercentage').textContent = satisfiedPercentage + '%';
+        }
+      }
+
+      // Display reviews
+      function displayReviews(filter = 'all') {
+        const reviews = loadReviews().sort((a, b) => new Date(b.date) - new Date(a.date));
+        
+        let filtered = reviews;
+        if (filter !== 'all') {
+          filtered = reviews.filter(r => r.rating >= parseFloat(filter));
+        }
+
+        reviewsGrid.innerHTML = '';
+
+        if (filtered.length === 0) {
+          emptyState.style.display = 'block';
+          return;
+        }
+
+        emptyState.style.display = 'none';
+
+        filtered.forEach(review => {
+          const ratingColor = getRatingColor(review.rating);
+          const reviewEl = document.createElement('div');
+          reviewEl.className = 'review-card';
+          reviewEl.innerHTML = `
+            <div class="review-header">
+              <div class="reviewer-info">
+                <h4>${review.name}</h4>
+                <p class="review-date">${new Date(review.date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}</p>
+              </div>
+              <div class="rating-display">
+                <span class="rating-stars">${'⭐'.repeat(Math.floor(review.rating))}</span>
+                <span class="rating-value">${review.rating}</span>
+              </div>
+            </div>
+            <div class="rating-bar-container">
+              <div class="rating-bar" style="width: ${(review.rating / 5) * 100}%; background: ${ratingColor};"></div>
+            </div>
+            <p class="review-text">${review.comment}</p>
+            <div class="review-footer">
+              <span class="verified-badge">
+                <i class="fas fa-check-circle"></i> Verified Review
+              </span>
+              <span>${new Date(review.date).toLocaleDateString()}</span>
+            </div>
+          `;
+          reviewsGrid.appendChild(reviewEl);
+        });
+      }
+
+      // Handle form submission
+      reviewForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        const name = document.getElementById('reviewName').value.trim();
+        const rating = parseFloat(document.getElementById('reviewRating').value);
+        const comment = document.getElementById('reviewComment').value.trim();
+
+        if (!name || !rating || !comment) {
+          alert('Please fill in all fields');
+          return;
+        }
+
+        const review = {
+          id: Date.now(),
+          name,
+          rating,
+          comment,
+          date: new Date().toISOString()
+        };
+
+        const reviews = loadReviews();
+        reviews.push(review);
+        saveReviews(reviews);
+
+        reviewForm.reset();
+        updateStats();
+        displayReviews(currentFilter);
+        
+        // Show success message
+        const successMsg = document.createElement('div');
+        successMsg.style.cssText = 'position: fixed; top: 20px; right: 20px; background: #10b981; color: white; padding: 16px 24px; border-radius: 8px; z-index: 9999; font-weight: 500; box-shadow: 0 5px 20px rgba(16, 185, 129, 0.3); display: flex; align-items: center; gap: 10px;';
+        successMsg.innerHTML = '<i class="fas fa-check-circle"></i> Review added successfully!';
+        document.body.appendChild(successMsg);
+        setTimeout(() => successMsg.remove(), 4000);
+      });
+
+      // Handle filter buttons
+      filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          filterBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          currentFilter = btn.dataset.filter;
+          displayReviews(currentFilter);
+        });
+      });
+
+      // Initialize
+      updateStats();
+      displayReviews();
+    }
+
+    // Start when page loads
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initReviewsPage);
+    } else {
+      initReviewsPage();
+    }
+  </script>
+</body>
+</html>
