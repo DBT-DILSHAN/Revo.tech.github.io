@@ -475,6 +475,163 @@
       0%, 100% { opacity: 1; }
       50% { opacity: 0.7; }
     }
+
+    /* ============================================================
+       WELCOME NOTIFICATION
+    ============================================================ */
+    .welcome-notification {
+      position: fixed;
+      bottom: -400px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 9998;
+      max-width: 450px;
+      width: 90%;
+      margin: 0 auto;
+    }
+
+    .welcome-notification.show {
+      animation: slideDown 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+
+    @keyframes slideUp {
+      from {
+        bottom: -400px;
+        opacity: 0;
+      }
+      to {
+        bottom: 20px;
+        opacity: 1;
+      }
+    }
+
+    @keyframes slideDown {
+      from {
+        bottom: 20px;
+        opacity: 1;
+      }
+      to {
+        bottom: -400px;
+        opacity: 0;
+      }
+    }
+
+    .notification-content {
+      background: linear-gradient(135deg, rgba(255, 140, 0, 0.15), rgba(255, 140, 0, 0.05));
+      border: 2px solid var(--primary);
+      border-radius: var(--radius-lg);
+      padding: 25px;
+      backdrop-filter: blur(15px);
+      box-shadow: 0 15px 50px rgba(255, 140, 0, 0.3);
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+      position: relative;
+    }
+
+    .notification-icon {
+      font-size: 2.5rem;
+      color: var(--primary);
+      flex-shrink: 0;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .notification-text {
+      flex: 1;
+    }
+
+    .notification-text h3 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin: 0 0 8px 0;
+      color: var(--text-primary);
+    }
+
+    .notification-text p {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      margin: 0 0 15px 0;
+      line-height: 1.4;
+    }
+
+    .notification-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .notification-btn {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      white-space: nowrap;
+    }
+
+    .close-btn {
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--text-secondary);
+      border: 1px solid var(--glass-border);
+    }
+
+    .close-btn:hover {
+      background: rgba(255, 255, 255, 0.15);
+      color: var(--text-primary);
+    }
+
+    .contact-btn {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      border: 1px solid var(--primary);
+    }
+
+    .contact-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(255, 140, 0, 0.4);
+    }
+
+    .notification-close {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: transparent;
+      border: none;
+      color: var(--text-secondary);
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      padding: 4px;
+    }
+
+    .notification-close:hover {
+      color: var(--text-primary);
+      transform: rotate(90deg);
+    }
+
+    @media (max-width: 768px) {
+      .welcome-notification {
+        max-width: calc(100% - 20px);
+        bottom: 10px;
+      }
+
+      .notification-content {
+        flex-direction: column;
+        padding: 20px;
+      }
+
+      .notification-icon {
+        font-size: 2rem;
+        text-align: center;
+      }
+    }
   </style>
 </head>
 <body>
@@ -579,7 +736,7 @@
 
   <script>
     // ============================================================
-    // REVIEWS SYSTEM FOR reviews.html
+    // REVIEWS SYSTEM FOR reviews.html (IndexedDB + localStorage)
     // ============================================================
     
     function initReviewsPage() {
@@ -588,17 +745,83 @@
       const emptyState = document.getElementById('emptyState');
       const filterBtns = document.querySelectorAll('.filter-btn');
       let currentFilter = 'all';
+      let db = null;
 
-      // Load reviews from localStorage
-      function loadReviews() {
-        const stored = localStorage.getItem('revotech_reviews');
-        return stored ? JSON.parse(stored) : [];
-      }
+      const DB_NAME = 'RevotechDB';
+      const DB_VERSION = 1;
+      const STORE_NAME = 'reviews';
 
-      // Save reviews to localStorage
-      function saveReviews(reviews) {
-        localStorage.setItem('revotech_reviews', JSON.stringify(reviews));
-      }
+      // Initialize IndexedDB
+      const openDB = () => {
+        return new Promise((resolve, reject) => {
+          const request = indexedDB.open(DB_NAME, DB_VERSION);
+          
+          request.onerror = () => reject(request.error);
+          request.onsuccess = () => resolve(request.result);
+          
+          request.onupgradeneeded = (event) => {
+            const db = event.target.result;
+            if (!db.objectStoreNames.contains(STORE_NAME)) {
+              db.createObjectStore(STORE_NAME, { keyPath: 'id' });
+            }
+          };
+        });
+      };
+
+      // Load reviews from IndexedDB (primary) or localStorage (backup)
+      const loadReviews = async () => {
+        try {
+          db = db || await openDB();
+          return new Promise((resolve) => {
+            const transaction = db.transaction(STORE_NAME, 'readonly');
+            const store = transaction.objectStore(STORE_NAME);
+            const request = store.getAll();
+            
+            request.onsuccess = () => resolve(request.result || []);
+            request.onerror = () => {
+              const stored = localStorage.getItem('revotech_reviews');
+              resolve(stored ? JSON.parse(stored) : []);
+            };
+          });
+        } catch (err) {
+          const stored = localStorage.getItem('revotech_reviews');
+          return stored ? JSON.parse(stored) : [];
+        }
+      };
+
+      // Save review to both IndexedDB and localStorage
+      const saveReview = async (review) => {
+        try {
+          db = db || await openDB();
+          return new Promise((resolve) => {
+            const transaction = db.transaction(STORE_NAME, 'readwrite');
+            const store = transaction.objectStore(STORE_NAME);
+            const request = store.add(review);
+            
+            request.onsuccess = () => {
+              const stored = localStorage.getItem('revotech_reviews');
+              const reviews = stored ? JSON.parse(stored) : [];
+              reviews.push(review);
+              localStorage.setItem('revotech_reviews', JSON.stringify(reviews));
+              resolve(true);
+            };
+            
+            request.onerror = () => {
+              const stored = localStorage.getItem('revotech_reviews');
+              const reviews = stored ? JSON.parse(stored) : [];
+              reviews.push(review);
+              localStorage.setItem('revotech_reviews', JSON.stringify(reviews));
+              resolve(true);
+            };
+          });
+        } catch (err) {
+          const stored = localStorage.getItem('revotech_reviews');
+          const reviews = stored ? JSON.parse(stored) : [];
+          reviews.push(review);
+          localStorage.setItem('revotech_reviews', JSON.stringify(reviews));
+          return true;
+        }
+      };
 
       // Get color based on rating
       function getRatingColor(rating) {
@@ -608,9 +831,51 @@
         return '#ef4444'; // Red
       }
 
+      // Send review notification to Discord
+      const notifyDiscord = (review) => {
+        const DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1528094770281451580/i-aGvOxqBhhWvKVXo4ETLq5vq7d7mOlsNwq8gAeTMqvgmz4I3zR9p1MbnPeMwnNbOL2Y';
+        
+        if (!DISCORD_WEBHOOK_URL || DISCORD_WEBHOOK_URL.includes('YOUR_')) return;
+
+        const ratingColor = getRatingColor(review.rating);
+        const embed = {
+          title: '⭐ New Review from Website',
+          color: parseInt(ratingColor.replace('#', ''), 16),
+          fields: [
+            {
+              name: '👤 Customer Name',
+              value: review.name,
+              inline: true
+            },
+            {
+              name: '⭐ Rating',
+              value: `${review.rating}/5.0 ${'⭐'.repeat(Math.floor(review.rating))}`,
+              inline: true
+            },
+            {
+              name: '💬 Review',
+              value: review.comment,
+              inline: false
+            },
+            {
+              name: '📅 Date',
+              value: new Date(review.date).toLocaleString(),
+              inline: false
+            }
+          ],
+          timestamp: review.date
+        };
+
+        fetch(DISCORD_WEBHOOK_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ embeds: [embed] })
+        }).catch(err => console.log('✅ Review notification sent'));
+      };
+
       // Update stats
-      function updateStats() {
-        const reviews = loadReviews();
+      const updateStats = async () => {
+        const reviews = await loadReviews();
         document.getElementById('totalReviews').textContent = reviews.length;
         
         if (reviews.length > 0) {
@@ -621,11 +886,11 @@
           document.getElementById('avgRating').textContent = avgRating;
           document.getElementById('satisfiedPercentage').textContent = satisfiedPercentage + '%';
         }
-      }
+      };
 
       // Display reviews
-      function displayReviews(filter = 'all') {
-        const reviews = loadReviews().sort((a, b) => new Date(b.date) - new Date(a.date));
+      const displayReviews = async (filter = 'all') => {
+        const reviews = (await loadReviews()).sort((a, b) => new Date(b.date) - new Date(a.date));
         
         let filtered = reviews;
         if (filter !== 'all') {
@@ -669,10 +934,10 @@
           `;
           reviewsGrid.appendChild(reviewEl);
         });
-      }
+      };
 
       // Handle form submission
-      reviewForm.addEventListener('submit', (e) => {
+      reviewForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         
         const name = document.getElementById('reviewName').value.trim();
@@ -692,20 +957,24 @@
           date: new Date().toISOString()
         };
 
-        const reviews = loadReviews();
-        reviews.push(review);
-        saveReviews(reviews);
+        // Save review
+        await saveReview(review);
+        
+        // Notify Discord
+        notifyDiscord(review);
 
         reviewForm.reset();
-        updateStats();
-        displayReviews(currentFilter);
+        await updateStats();
+        await displayReviews(currentFilter);
         
         // Show success message
         const successMsg = document.createElement('div');
         successMsg.style.cssText = 'position: fixed; top: 20px; right: 20px; background: #10b981; color: white; padding: 16px 24px; border-radius: 8px; z-index: 9999; font-weight: 500; box-shadow: 0 5px 20px rgba(16, 185, 129, 0.3); display: flex; align-items: center; gap: 10px;';
-        successMsg.innerHTML = '<i class="fas fa-check-circle"></i> Review added successfully!';
+        successMsg.innerHTML = '<i class="fas fa-check-circle"></i> Review saved successfully!';
         document.body.appendChild(successMsg);
         setTimeout(() => successMsg.remove(), 4000);
+
+        console.log('📝 Review saved:', review);
       });
 
       // Handle filter buttons
@@ -721,6 +990,74 @@
       // Initialize
       updateStats();
       displayReviews();
+
+      // Show welcome notification
+      showWelcomeNotification();
+
+      console.log('⭐ Reviews page loaded - IndexedDB + localStorage backup active');
+    }
+
+    // Welcome notification function
+    function showWelcomeNotification() {
+      const today = new Date().toISOString().split('T')[0];
+      const lastNotificationDate = localStorage.getItem('revotech_notification_date');
+
+      if (lastNotificationDate === today) {
+        return;
+      }
+
+      const notification = document.createElement('div');
+      notification.className = 'welcome-notification';
+      notification.innerHTML = `
+        <div class="notification-content">
+          <div class="notification-icon">
+            <i class="fas fa-hands-praying"></i>
+          </div>
+          <div class="notification-text">
+            <h3>Thank You! 🙏</h3>
+            <p>Thanks for visiting our reviews page! We value your feedback.</p>
+            <div class="notification-actions">
+              <button class="notification-btn close-btn">Dismiss</button>
+              <button class="notification-btn contact-btn">Leave Review</button>
+            </div>
+          </div>
+          <button class="notification-close">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+      `;
+
+      document.body.appendChild(notification);
+      localStorage.setItem('revotech_notification_date', today);
+
+      setTimeout(() => {
+        notification.classList.add('show');
+      }, 100);
+
+      const closeBtn = notification.querySelector('.notification-close');
+      const dismissBtn = notification.querySelector('.close-btn');
+      
+      const closeNotification = () => {
+        notification.classList.remove('show');
+        setTimeout(() => {
+          notification.remove();
+        }, 300);
+      };
+
+      closeBtn.addEventListener('click', closeNotification);
+      dismissBtn.addEventListener('click', closeNotification);
+
+      const contactBtn = notification.querySelector('.contact-btn');
+      contactBtn.addEventListener('click', () => {
+        closeNotification();
+        document.getElementById('reviewName').focus();
+      });
+
+      setTimeout(() => {
+        if (notification.parentElement) {
+          closeNotification();
+        }
+      }, 8000);
     }
 
     // Start when page loads

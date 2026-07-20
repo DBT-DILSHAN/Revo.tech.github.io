@@ -11,6 +11,10 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   
+  <!-- FIREBASE REALTIME DATABASE -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js"></script>
+  
   <!-- GOOGLE ANALYTICS -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
   <script>
@@ -237,6 +241,181 @@
 
       .electricity-arc::after {
         animation: electricityPulse 1s ease-in-out infinite;
+      }
+    }
+
+    /* ============================================================
+       WELCOME NOTIFICATION STYLES
+    ============================================================ */
+    .welcome-notification {
+      position: fixed;
+      bottom: -400px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 9998;
+      max-width: 450px;
+      width: 90%;
+      margin: 0 auto;
+      animation: slideUp 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+
+    .welcome-notification.show {
+      animation: slideDown 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+
+    @keyframes slideUp {
+      from {
+        bottom: -400px;
+        opacity: 0;
+      }
+      to {
+        bottom: 20px;
+        opacity: 1;
+      }
+    }
+
+    @keyframes slideDown {
+      from {
+        bottom: 20px;
+        opacity: 1;
+      }
+      to {
+        bottom: -400px;
+        opacity: 0;
+      }
+    }
+
+    .notification-content {
+      background: linear-gradient(135deg, rgba(255, 140, 0, 0.15), rgba(255, 140, 0, 0.05));
+      border: 2px solid var(--primary);
+      border-radius: var(--radius-lg);
+      padding: 25px;
+      backdrop-filter: blur(15px);
+      box-shadow: 0 15px 50px rgba(255, 140, 0, 0.3), 0 0 40px rgba(255, 140, 0, 0.2);
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+      position: relative;
+    }
+
+    .notification-icon {
+      font-size: 2.5rem;
+      color: var(--primary);
+      flex-shrink: 0;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0px);
+      }
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+
+    .notification-text {
+      flex: 1;
+    }
+
+    .notification-text h3 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--text-primary);
+      margin: 0 0 8px 0;
+    }
+
+    .notification-text p {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      margin: 0 0 15px 0;
+      line-height: 1.4;
+    }
+
+    .notification-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .notification-btn {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      white-space: nowrap;
+    }
+
+    .close-btn {
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--text-secondary);
+      border: 1px solid var(--glass-border);
+    }
+
+    .close-btn:hover {
+      background: rgba(255, 255, 255, 0.15);
+      color: var(--text-primary);
+    }
+
+    .contact-btn {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      border: 1px solid var(--primary);
+    }
+
+    .contact-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(255, 140, 0, 0.4);
+    }
+
+    .notification-close {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: transparent;
+      border: none;
+      color: var(--text-secondary);
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      padding: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .notification-close:hover {
+      color: var(--text-primary);
+      transform: rotate(90deg);
+    }
+
+    @media (max-width: 768px) {
+      .welcome-notification {
+        max-width: calc(100% - 20px);
+        bottom: 10px;
+      }
+
+      .notification-content {
+        flex-direction: column;
+        padding: 20px;
+      }
+
+      .notification-icon {
+        font-size: 2rem;
+        align-self: center;
+      }
+
+      .notification-actions {
+        width: 100%;
+      }
+
+      .notification-btn {
+        flex: 1;
+        text-align: center;
       }
     }
 
@@ -3534,38 +3713,176 @@
       });
 
       // ============================================================
-      // 14. VISIT COUNTER (localStorage based)
+      // 14. REALTIME FIREBASE VISITOR COUNTER
       // ============================================================
-      function initVisitCounter() {
+      // Firebase Configuration - Replace with your Firebase config
+      const firebaseConfig = {
+        apiKey: "AIzaSyBSeNnRL8DZrGi5qhP_rCqY7JDwJpNE",
+        authDomain: "revotech-solutions.firebaseapp.com",
+        databaseURL: "https://revotech-solutions-default-rtdb.asia-southeast1.firebaseio.com",
+        projectId: "revotech-solutions",
+        storageBucket: "revotech-solutions.firebasestorage.app",
+        messagingSenderId: "45845424278",
+        appId: "1:45845424278:web:1a0fce8c9a95c8492dd5d5",
+        measurementId: "G-G65H83SFDT"
+      };
+
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      const database = firebase.database();
+
+      function initFirebaseVisitCounter() {
         const visitCountElement = document.getElementById('visitCount');
         if (!visitCountElement) return;
 
-        const STORAGE_KEY = 'revotech_visit_count';
-        const LAST_VISIT_KEY = 'revotech_last_visit';
-        const VISIT_EXPIRY_HOURS = 24;
+        const visitorRef = database.ref('stats/totalVisitors');
+        const visitorIpRef = database.ref('visitors');
 
-        let visitCount = parseInt(localStorage.getItem(STORAGE_KEY)) || 0;
-        const lastVisit = localStorage.getItem(LAST_VISIT_KEY);
-        const now = Date.now();
+        // Get unique visitor ID (stored locally)
+        const getVisitorId = () => {
+          let visitorId = localStorage.getItem('revotech_visitor_id');
+          if (!visitorId) {
+            visitorId = 'visitor_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+            localStorage.setItem('revotech_visitor_id', visitorId);
+          }
+          return visitorId;
+        };
 
-        // Check if it's a new visit (beyond 24 hours)
-        if (!lastVisit || (now - parseInt(lastVisit)) > (VISIT_EXPIRY_HOURS * 60 * 60 * 1000)) {
-          visitCount++;
-          localStorage.setItem(STORAGE_KEY, visitCount.toString());
-          localStorage.setItem(LAST_VISIT_KEY, now.toString());
-          console.log('👁️ New visit recorded! Total visits:', visitCount);
-        } else {
-          console.log('👁️ Welcome back! Total visits:', visitCount);
-        }
+        const visitorId = getVisitorId();
 
-        // Display counter with nice formatting
-        visitCountElement.textContent = visitCount.toLocaleString();
-        
-        // Add subtle animation on load
-        visitCountElement.style.animation = 'pulse 0.6s ease-out';
+        // Listen to real-time visitor count updates
+        visitorRef.on('value', (snapshot) => {
+          const count = snapshot.val() || 0;
+          visitCountElement.textContent = count.toLocaleString();
+          
+          // Pulse animation when count updates
+          visitCountElement.style.animation = 'none';
+          setTimeout(() => {
+            visitCountElement.style.animation = 'pulse 0.6s ease-out';
+          }, 10);
+
+          console.log('👁️ Real-time visitors:', count);
+        });
+
+        // Check if this visitor already visited today
+        const todayKey = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+        const visitorDayRef = database.ref(`visitors/${visitorId}/${todayKey}`);
+
+        visitorDayRef.once('value', (snapshot) => {
+          if (!snapshot.exists()) {
+            // New visitor for today - increment counter
+            visitorRef.transaction((current) => {
+              return (current || 0) + 1;
+            }).then(() => {
+              // Record this visit
+              visitorDayRef.set({
+                timestamp: firebase.database.ServerValue.TIMESTAMP,
+                userAgent: navigator.userAgent.substring(0, 100),
+                referrer: document.referrer || 'Direct',
+                device: getDeviceType()
+              });
+
+              console.log('✅ New visitor recorded!');
+            });
+          } else {
+            console.log('👁️ Welcome back today!');
+          }
+        });
       }
 
-      initVisitCounter();
+      // Get device type
+      function getDeviceType() {
+        const ua = navigator.userAgent.toLowerCase();
+        if (/mobile|android|iphone|ipod/.test(ua)) return 'Mobile';
+        if (/tablet|ipad/.test(ua)) return 'Tablet';
+        return 'Desktop';
+      }
+
+      // Initialize counter when Firebase is ready
+      database.ref('.info/connected').on('value', (snapshot) => {
+        if (snapshot.val() === true) {
+          console.log('🔥 Firebase connected!');
+          initFirebaseVisitCounter();
+          showWelcomeNotification();
+        }
+      });
+
+      // ============================================================
+      // 15. WELCOME NOTIFICATION
+      // ============================================================
+      function showWelcomeNotification() {
+        // Check if notification was shown today
+        const today = new Date().toISOString().split('T')[0];
+        const lastNotificationDate = localStorage.getItem('revotech_notification_date');
+
+        if (lastNotificationDate === today) {
+          return; // Already shown today
+        }
+
+        // Create notification element
+        const notification = document.createElement('div');
+        notification.className = 'welcome-notification';
+        notification.innerHTML = `
+          <div class="notification-content">
+            <div class="notification-icon">
+              <i class="fas fa-hands-praying"></i>
+            </div>
+            <div class="notification-text">
+              <h3>Thank You! 🙏</h3>
+              <p>Thanks for visiting us! We appreciate your interest in RevoTech Solutions.</p>
+              <div class="notification-actions">
+                <button class="notification-btn close-btn">Dismiss</button>
+                <button class="notification-btn contact-btn">Contact Us</button>
+              </div>
+            </div>
+            <button class="notification-close">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        `;
+
+        document.body.appendChild(notification);
+
+        // Record that notification was shown today
+        localStorage.setItem('revotech_notification_date', today);
+
+        // Animation delay
+        setTimeout(() => {
+          notification.classList.add('show');
+        }, 100);
+
+        // Close button handler
+        const closeBtn = notification.querySelector('.notification-close');
+        const dismissBtn = notification.querySelector('.close-btn');
+        
+        const closeNotification = () => {
+          notification.classList.remove('show');
+          setTimeout(() => {
+            notification.remove();
+          }, 300);
+        };
+
+        closeBtn.addEventListener('click', closeNotification);
+        dismissBtn.addEventListener('click', closeNotification);
+
+        // Contact button handler
+        const contactBtn = notification.querySelector('.contact-btn');
+        contactBtn.addEventListener('click', () => {
+          closeNotification();
+          // Smooth scroll to contact section
+          const contactSection = document.getElementById('contact');
+          if (contactSection) {
+            contactSection.scrollIntoView({ behavior: 'smooth' });
+          }
+        });
+
+        // Auto close after 8 seconds
+        setTimeout(() => {
+          if (notification.parentElement) {
+            closeNotification();
+          }
+        }, 8000);
+      }
 
       // ============================================================
       // 15. VISITOR NOTIFICATION SYSTEM
@@ -3737,33 +4054,10 @@
       }
 
 
-      // ============================================================
-      // 16. REAL-TIME VISITOR COUNTER UPDATE
-      // ============================================================
-      function startRealtimeVisitorCounter() {
-        const visitCountElement = document.getElementById('visitCount');
-        if (!visitCountElement) return;
-
-        // Update counter every 3-5 seconds with random increments
-        setInterval(() => {
-          const currentCount = parseInt(visitCountElement.textContent.replace(/,/g, '')) || 0;
-          // Randomly add 0-1 visitors to simulate real-time activity
-          if (Math.random() > 0.65) {
-            const newCount = currentCount + 1;
-            visitCountElement.textContent = newCount.toLocaleString();
-            visitCountElement.style.animation = 'none';
-            setTimeout(() => {
-              visitCountElement.style.animation = 'pulse 0.6s ease-out';
-            }, 10);
-          }
-        }, Math.random() * 3000 + 4000);
-      }
-
-      // Call after initial counter load
-      setTimeout(startRealtimeVisitorCounter, 1000);
+      // Real-time Firebase updates handle visitor counter automatically
 
       // ============================================================
-      // 17. CUSTOMER REVIEWS SYSTEM
+      // 17. ENHANCED CUSTOMER REVIEWS SYSTEM (IndexedDB + localStorage backup)
       // ============================================================
       function initReviewsSystem() {
         const reviewForm = document.getElementById('reviewForm');
@@ -3771,20 +4065,91 @@
         
         if (!reviewForm || !reviewsContainer) return;
 
-        // Load reviews from localStorage
-        function loadReviews() {
-          const stored = localStorage.getItem('revotech_reviews');
-          return stored ? JSON.parse(stored) : [];
-        }
+        // Initialize IndexedDB
+        let db;
+        const DB_NAME = 'RevotechDB';
+        const DB_VERSION = 1;
+        const STORE_NAME = 'reviews';
 
-        // Save reviews to localStorage
-        function saveReviews(reviews) {
-          localStorage.setItem('revotech_reviews', JSON.stringify(reviews));
-        }
+        const openDB = () => {
+          return new Promise((resolve, reject) => {
+            const request = indexedDB.open(DB_NAME, DB_VERSION);
+            
+            request.onerror = () => reject(request.error);
+            request.onsuccess = () => resolve(request.result);
+            
+            request.onupgradeneeded = (event) => {
+              const db = event.target.result;
+              if (!db.objectStoreNames.contains(STORE_NAME)) {
+                db.createObjectStore(STORE_NAME, { keyPath: 'id' });
+              }
+            };
+          });
+        };
+
+        // Load reviews from IndexedDB (primary) or localStorage (backup)
+        const loadReviews = async () => {
+          try {
+            db = db || await openDB();
+            return new Promise((resolve) => {
+              const transaction = db.transaction(STORE_NAME, 'readonly');
+              const store = transaction.objectStore(STORE_NAME);
+              const request = store.getAll();
+              
+              request.onsuccess = () => resolve(request.result || []);
+              request.onerror = () => {
+                // Fallback to localStorage
+                const stored = localStorage.getItem('revotech_reviews');
+                resolve(stored ? JSON.parse(stored) : []);
+              };
+            });
+          } catch (err) {
+            // Fallback to localStorage
+            const stored = localStorage.getItem('revotech_reviews');
+            return stored ? JSON.parse(stored) : [];
+          }
+        };
+
+        // Save review to both IndexedDB and localStorage
+        const saveReview = async (review) => {
+          try {
+            db = db || await openDB();
+            return new Promise((resolve) => {
+              const transaction = db.transaction(STORE_NAME, 'readwrite');
+              const store = transaction.objectStore(STORE_NAME);
+              const request = store.add(review);
+              
+              request.onsuccess = () => {
+                // Also backup to localStorage
+                const stored = localStorage.getItem('revotech_reviews');
+                const reviews = stored ? JSON.parse(stored) : [];
+                reviews.push(review);
+                localStorage.setItem('revotech_reviews', JSON.stringify(reviews));
+                resolve(true);
+              };
+              
+              request.onerror = () => {
+                // Fallback to localStorage only
+                const stored = localStorage.getItem('revotech_reviews');
+                const reviews = stored ? JSON.parse(stored) : [];
+                reviews.push(review);
+                localStorage.setItem('revotech_reviews', JSON.stringify(reviews));
+                resolve(true);
+              };
+            });
+          } catch (err) {
+            // Fallback to localStorage
+            const stored = localStorage.getItem('revotech_reviews');
+            const reviews = stored ? JSON.parse(stored) : [];
+            reviews.push(review);
+            localStorage.setItem('revotech_reviews', JSON.stringify(reviews));
+            return true;
+          }
+        };
 
         // Add sample reviews if none exist
-        function initializeSampleReviews() {
-          const reviews = loadReviews();
+        const initializeSampleReviews = async () => {
+          const reviews = await loadReviews();
           if (reviews.length === 0) {
             const samples = [
               {
@@ -3809,11 +4174,11 @@
                 date: new Date().toISOString()
               }
             ];
-            saveReviews(samples);
-            return samples;
+            for (const sample of samples) {
+              await saveReview(sample);
+            }
           }
-          return reviews;
-        }
+        };
 
         // Get color based on rating
         function getRatingColor(rating) {
@@ -3823,9 +4188,51 @@
           return '#ef4444'; // Red
         }
 
+        // Send review notification to Discord
+        const notifyDiscord = (review) => {
+          const DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1528094770281451580/i-aGvOxqBhhWvKVXo4ETLq5vq7d7mOlsNwq8gAeTMqvgmz4I3zR9p1MbnPeMwnNbOL2Y';
+          
+          if (!DISCORD_WEBHOOK_URL || DISCORD_WEBHOOK_URL.includes('YOUR_')) return;
+
+          const ratingColor = getRatingColor(review.rating);
+          const embed = {
+            title: '⭐ New Customer Review!',
+            color: parseInt(ratingColor.replace('#', ''), 16),
+            fields: [
+              {
+                name: '👤 Customer Name',
+                value: review.name,
+                inline: true
+              },
+              {
+                name: '⭐ Rating',
+                value: `${review.rating}/5.0 ${'⭐'.repeat(Math.floor(review.rating))}`,
+                inline: true
+              },
+              {
+                name: '💬 Review',
+                value: review.comment,
+                inline: false
+              },
+              {
+                name: '📅 Date',
+                value: new Date(review.date).toLocaleString(),
+                inline: false
+              }
+            ],
+            timestamp: review.date
+          };
+
+          fetch(DISCORD_WEBHOOK_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ embeds: [embed] })
+          }).catch(err => console.log('Discord notification sent'));
+        };
+
         // Display reviews
-        function displayReviews() {
-          const reviews = loadReviews();
+        const displayReviews = async () => {
+          const reviews = await loadReviews();
           reviewsContainer.innerHTML = '';
 
           if (reviews.length === 0) {
@@ -3855,10 +4262,10 @@
             `;
             reviewsContainer.appendChild(reviewEl);
           });
-        }
+        };
 
         // Handle form submission
-        reviewForm.addEventListener('submit', (e) => {
+        reviewForm.addEventListener('submit', async (e) => {
           e.preventDefault();
           
           const name = document.getElementById('reviewName').value.trim();
@@ -3878,33 +4285,37 @@
             date: new Date().toISOString()
           };
 
-          const reviews = loadReviews();
-          reviews.push(review);
-          saveReviews(reviews);
+          // Save review
+          await saveReview(review);
+          
+          // Send Discord notification
+          notifyDiscord(review);
 
           reviewForm.reset();
-          displayReviews();
+          await displayReviews();
           
           // Show success message
           const successMsg = document.createElement('div');
           successMsg.style.cssText = 'position: fixed; top: 20px; right: 20px; background: #10b981; color: white; padding: 12px 20px; border-radius: 8px; z-index: 9999; font-weight: 500; box-shadow: 0 5px 20px rgba(16, 185, 129, 0.3);';
-          successMsg.textContent = '✅ Review added successfully!';
+          successMsg.textContent = '✅ Review saved successfully! Thanks for your feedback.';
           document.body.appendChild(successMsg);
           setTimeout(() => successMsg.remove(), 3000);
+
+          console.log('📝 Review saved:', review);
         });
 
         // Initialize and display
-        initializeSampleReviews();
-        displayReviews();
+        initializeSampleReviews().then(() => displayReviews());
       }
 
       initReviewsSystem();
 
       console.log('🚀 RevoTech Solutions — All Features Loaded!');
-      console.log('✅ EmailJS Integration | Contact Form | Dark/Light Theme | Visit Counter | Reviews System');
+      console.log('✅ Firebase Realtime Counter | Welcome Notification | EmailJS | Contact Form | Reviews System');
       console.log('📧 Email: revotechsolutions.info@gmail.com');
-      console.log('👁️ Real-time visitor tracking enabled');
-      console.log('⭐ Customer reviews system active');
+      console.log('🔥 Firebase Realtime Database - Real-time visitor tracking active');
+      console.log('🙏 Welcome notification system enabled (once per day)');
+      console.log('⭐ Customer reviews with IndexedDB + localStorage backup');
 
     })();
   </script>
